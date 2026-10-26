@@ -1,45 +1,54 @@
-# Unit Kerja: Proyek Pengembangan
+# Kawaguchiko — Pelayanan Unit Kerja
 
-Folder ini dibangun langsung dari halaman yang dipublish di claude.ai
-(`1iyUpnXjhQgpa8NwfANiaq`). Setiap bagian CSS dan JS dipecah per komponen tanpa
-mengubah isinya.
+Halaman landing page dengan nuansa Jepang yang tenang dan etereal: biru malam Gunung Fuji dan Danau Kawaguchiko, sakura, kertas washi, dan kanji sebagai aksen.
 
 ## Struktur
 
 ```
-unit-kerja-dev/
-├─ index.html                 kerangka halaman dan urutan bagian
-├─ DESIGN.md                  panduan desain
-├─ README.md
-├─ .vscode/extensions.json    rekomendasi ekstensi (Live Server)
-├─ styles/                    CSS per komponen (admin.css untuk halaman admin)
-│  ├─ base.css                token warna, reset, kelas dasar
+kegaiatan-pelayanan-madu/
+├─ app/
+│  ├─ layout.tsx              Root layout dengan metadata
+│  ├─ page.tsx                Halaman utama (LandingPage)
+│  ├─ globals.css             Global CSS Tailwind + import styles
+│  ├─ admin/
+│  │  ├─ login/page.tsx       Halaman login admin
+│  │  └─ upload/page.tsx      Halaman upload (legacy, dialihkan ke editor)
+│  └─ editor/page.tsx         Halaman editor utama (table editor)
+├─ components/
+│  ├─ landing/                Komponen landing page
+│  │  ├─ landing-page.tsx     Orkestrator landing page
+│  │  ├─ header.tsx           Header dengan jam lokal
+│  │  ├─ hero.tsx             Hero section dengan video
+│  │  ├─ kegiatan.tsx         Kegiatan section
+│  │  ├─ layanan.tsx          Layanan section
+│  │  ├─ statistik.tsx        Statistik section
+│  │  ├─ tentang.tsx          Tentang section
+│  │  ├─ galeri.tsx           Galeri berlapis
+│  │  ├─ card-scan.tsx        Card scan section
+│  │  └─ footer.tsx           Footer dengan starfield
+│  └─ editor/                 Komponen editor
+│     ├─ toolbar.tsx          Toolbar editor
+│     ├─ sidebar.tsx          Sidebar media & pengaturan
+│     └─ canvas.tsx           Canvas editor kegiatan
+├─ styles/                    CSS per komponen
+│  ├─ base.css                Token warna, reset, kelas dasar
+│  ├─ background.css          washi, seigaiha, kabut, kanji vertikal
 │  ├─ header-hero.css         header, hero, video, kelopak sakura
 │  ├─ activities.css          chip filter, grid, kartu kegiatan
-│  ├─ footer-reveal.css       footer dasar dan animasi muncul (.rv)
 │  ├─ layer2.css              layanan, statistik, tentang, footer hitam, modal
 │  ├─ gallery.css             galeri berlapis (layer sticky)
-│  ├─ background.css          washi, seigaiha, kabut, kanji vertikal
-│  ├─ footer-docs.css         footer, starfield, kartu dokumentasi
-│  └─ scan.css                section card scan sakura cyber
-├─ scripts/                   JS per komponen (script biasa, bukan module)
-│  ├─ 00-hero.js              kelopak sakura
-│  ├─ 01-core.js              helper $ dan h, state, koneksi platform, format tanggal
-│  ├─ 02-activities.js        kartu, chip, grid, observer muncul, render
-│  ├─ 03-services-stats.js    daftar layanan dari kategori, angka statistik
-│  ├─ 04-clock.js             jam lokal di header
-│  ├─ 05-modal.js             modal "Ajukan Pertanyaan" (stub)
-│  ├─ 06-gallery.js           galeri berlapis dan efek scroll
-│  ├─ 06b-starfield.js        latar Starfield Close di footer (Three.js r143)
-│  ├─ 06c-docs.js             kartu dokumentasi bergeser di footer
-│  ├─ 06d-scan.js             card scan sakura cyber
-│  └─ 07-init.js              ambil db, langganan data kegiatan dan caption
-├─ admin.html                 halaman admin
-├─ firestore.rules            aturan akses Firestore
-├─ storage.rules              aturan akses Storage
-├─ SETUP-FIREBASE.md          langkah setup Firebase dan Vercel
-├─ assets/moon-hero.mp4       video latar hero
-└─ upscale/upscale.py         skrip upscale gambar dan video
+│  ├─ scan.css                section card scan sakura cyber
+│  ├─ footer-reveal.css       footer dasar dan animasi muncul (.rv)
+│  └─ footer-docs.css         footer, starfield, kartu dokumentasi
+├─ lib/
+│  ├─ supabase.ts             Klien Supabase & auth helpers
+│  └─ utils.ts                Utility functions
+├─ supabase/
+│  └─ migrations/
+│     └─ 001_create_editor_tables.sql  Bucket & table editor
+├─ middleware.ts               Proteksi rute editor
+├─ DESIGN.md                   Panduan desain
+└─ package.json
 ```
 
 ## Urutan section di halaman
@@ -55,27 +64,33 @@ unit-kerja-dev/
 
 ## Halaman
 
-- `index.html`: halaman publik (membaca data dari Firebase)
-- `admin.html`: halaman admin (login, tambah dan hapus kegiatan, caption). Lihat `SETUP-FIREBASE.md`.
+- `/`: halaman publik (membaca data dari Supabase)
+- `/admin/login`: halaman login admin
+- `/editor`: halaman editor utama (table editor untuk mengelola kegiatan, media, dan pengaturan)
+
+## Database (Supabase)
+
+Buckets:
+- `kegiatan-images` — gambar kegiatan
+- `editor-uploads` — file editor (dokumen, gambar, dll)
+
+Tables:
+- `activities` — data kegiatan (title, date, unit, category, description, image)
+- `site_settings` — pengaturan situs (caption)
+- `editor_pages` — halaman editor (slug, title, content JSONB)
+- `editor_media` — media library
+- `editor_users` — user editor dengan role (admin, editor, viewer)
+
+Lihat `supabase/migrations/001_create_editor_tables.sql` untuk skema lengkap.
 
 ## Menjalankan
 
-1. Buka folder `unit-kerja-dev` di VS Code.
-2. Pasang Live Server, lalu klik kanan `index.html` → **Open with Live Server**.
-
-Dibutuhkan koneksi internet untuk Google Fonts, Three.js dari jsDelivr, Firebase
-dari gstatic, dan foto kegiatan dari Firebase Storage. Sebelum data tampil, isi
-`scripts/firebase-config.js` dan terapkan aturan keamanan. Panduan lengkap ada di
-`SETUP-FIREBASE.md`.
+1. Salin `.env.example` ke `.env` dan isi kredensial Supabase
+2. Jalankan migration di Supabase SQL Editor
+3. Jalankan `npm install && npm run dev`
 
 ## Batasan
 
-- Sebelum `firebase-config.js` diisi, kegiatan dan caption tidak tampil. Layout,
-  video, latar, dan komponen statis tetap berjalan.
-- Halaman belum dibandingkan secara visual dengan artifact di claude.ai. Periksa
-  bagian scan, starfield, dan galeri di desktop dan ponsel.
-
-## Urutan file JavaScript
-
-Semua berkas dimuat berurutan dan saling membagi variabel global (`items`, `db`,
-`h`, `$`, `fmtDate`). `07-init.js` harus paling akhir karena memanggil `render()`.
+- Halaman publik tidak punya panel admin. Penulisan dibatasi di sisi database melalui RLS.
+- Starfield dan Three.js memerlukan CDN jsDelivr.
+- Efek bloom dari spesifikasi Starfield Close belum dipakai. Kilau memakai titik additive dasar.

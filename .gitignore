@@ -1,5 +1,32 @@
-.DS_Store
+# Next.js
+.next/
+next-env.d.ts
+out/
+build/
+
+# Node.js
 node_modules/
-*.log
-.vscode/*
-!.vscode/extensions.json
+.pnpm-store/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Supabase
+.supabase/
+
+# Vercel
+.vercel/
+
+# TypeScript
+*.tsbuildinfo

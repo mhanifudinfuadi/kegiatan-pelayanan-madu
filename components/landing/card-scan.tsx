@@ -1,0 +1,150 @@
+"use client"
+
+import { useEffect, useRef, useState } from "react"
+
+interface Activity {
+  id: string
+  title: string
+  date: string
+  unit: string
+  category: string
+  description?: string
+  image?: string
+}
+
+interface CardScanProps {
+  activities: Activity[]
+}
+
+export function CardScan({ activities }: CardScanProps) {
+  const trackRef = useRef<HTMLDivElement>(null)
+  const beamRef = useRef<HTMLDivElement>(null)
+  const [isHovering, setIsHovering] = useState(false)
+  const [status, setStatus] = useState<"idle" | "scanning" | "paused">("idle")
+  const rafRef = useRef<number | null>(null)
+  const positionRef = useRef(0)
+  const prefersReduced = typeof window !== 'undefined'
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false
+
+  const activitiesWithImages = activities.filter(a => a.image)
+
+  useEffect(() => {
+    if (prefersReduced || !trackRef.current) return
+
+    const track = trackRef.current
+    const speed = 55 // px per second
+    let lastTime = performance.now()
+
+    const animate = (now: number) => {
+      const delta = (now - lastTime) / 1000
+      lastTime = now
+
+      const currentSpeed = isHovering ? speed * 0.35 : speed
+      positionRef.current += currentSpeed * delta
+
+      // Reset position when track moves past viewport
+      const trackWidth = track.scrollWidth
+      if (positionRef.current > trackWidth) {
+        positionRef.current = -trackWidth / 2
+      }
+
+      track.style.transform = `translateX(${positionRef.current}px)`
+      rafRef.current = requestAnimationFrame(animate)
+    }
+
+    rafRef.current = requestAnimationFrame(animate)
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
+  }, [isHovering, prefersReduced])
+
+  const handleMouseEnter = () => {
+    setIsHovering(true)
+    setStatus("paused")
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovering(false)
+    setStatus("idle")
+  }
+
+  const handlePause = () => {
+    setIsHovering(true)
+    setStatus("paused")
+  }
+
+  const handleResume = () => {
+    setIsHovering(false)
+    setStatus("idle")
+  }
+
+  const formatDate = (dateStr: string) => {
+    const d = new Date(dateStr)
+    return d.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })
+  }
+
+  if (activitiesWithImages.length === 0) {
+    return (
+      <section className="sc" id="scan">
+        <div className="wrap">
+          <p className="eyebrow light">Scan</p>
+          <h2 className="sc-title">Pindaian <span>Kegiatan</span></h2>
+          <p className="sc-lead">Garis pemindai bergerak melintasi kartu kegiatan yang ada fotonya.</p>
+          <div className="sc-empty" style={{ marginTop: "2rem" }}>
+            Belum ada kegiatan dengan foto.
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <section className="sc" id="scan" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <div className="wrap">
+        <p className="eyebrow light">Scan</p>
+        <h2 className="sc-title">Pindaian <span>Kegiatan</span></h2>
+        <p className="sc-lead">Garis pemindai bergerak melintasi kartu. Foto memudar menjadi aksara saat melewati garis. Jeda, perlambat, percepat.</p>
+
+        <div className="sc-stage">
+          <div className="sc-track" ref={trackRef} style={{ animation: prefersReduced ? "none" : undefined }}>
+            {/* Duplicate activities for infinite scroll effect */}
+            {[...activitiesWithImages, ...activitiesWithImages, ...activitiesWithImages].map((act, idx) => (
+              <div key={`${act.id}-${idx}`} className="sc-card">
+                <div className="sc-chip">
+                  <span>桜光夢風雲龍水火空心和道未来電脳夜花月雪京炎鋼刃</span>
+                </div>
+                <div
+                  className="sc-photo"
+                  style={{ backgroundImage: `url(${act.image})` }}
+                />
+                <div className="sc-glyphs">
+                  {Array.from({ length: 130 }).map((_, i) => (
+                    <span key={i}>{"桜花月雪京炎鋼刃水火空心和道未来電脳夜風雲龍光夢"[i % 20]}</span>
+                  ))}
+                </div>
+                <div className="sc-info">
+                  <span className="sc-tag">{act.category}</span>
+                  <h2>{act.title}</h2>
+                  <p>{formatDate(act.date)} · {act.unit}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="sc-beam" ref={beamRef} />
+        </div>
+
+        <div className="sc-controls">
+          <button className="sc-btn" onClick={handlePause} disabled={status === "paused" || prefersReduced}>
+            Jeda
+          </button>
+          <button className="sc-btn" onClick={handleResume} disabled={status === "idle" || prefersReduced}>
+            Lanjut
+          </button>
+          <span className="sc-status">{status === "paused" ? "Dijeda" : status === "idle" ? "Berjalan" : "Memindai"}</span>
+        </div>
+      </div>
+    </section>
+  )
+}
