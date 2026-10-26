@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pelayanan Unit Kerja · 桜 Kawaguchiko</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&family=Zen+Old+Mincho:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/header-hero.css">
+<link rel="stylesheet" href="styles/activities.css">
+<link rel="stylesheet" href="styles/footer-reveal.css">
+<link rel="stylesheet" href="styles/layer2.css">
+<link rel="stylesheet" href="styles/gallery.css">
+<link rel="stylesheet" href="styles/background.css">
+<link rel="stylesheet" href="styles/footer-docs.css">
+<link rel="stylesheet" href="styles/scan.css">
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.143.0/build/three.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="mist m1" aria-hidden="true"></div>
+<div class="mist m2" aria-hidden="true"></div>
+<div class="jp-vert" aria-hidden="true">一期一会</div>
+
+<section class="hero" id="beranda">
+  <video class="hero-video" autoplay muted loop playsinline src="assets/moon-hero.mp4"></video>
+  <header class="top">
+    <a class="brand" href="#beranda">桜 · Unit Kerja</a>
+    <nav>
+      <span class="clock" id="clock"></span>
+      <a href="#kegiatan">Kegiatan</a>
+      <a href="#statistik">Statistik</a>
+      <a href="#tentang">Tentang</a>
+    </nav>
+  </header>
+  <div class="hero-text">
+    <p class="jp">河口湖 · 桜の季節</p>
+    <h1 class="serif">Melayani dengan Harmoni</h1>
+    <p class="lead">Rangkaian kegiatan pelayanan unit kerja, tersusun rapi dan tenang seperti danau yang memantulkan Gunung Fuji.</p>
+    <p class="caption" id="caption">Setiap langkah adalah bagian dari pelayanan.</p>
+    <button class="btn" id="btnLihat">Lihat Kegiatan <span>→</span></button>
+  </div>
+  <div class="petals" id="petals"></div>
+</section>
+
+<section class="acts" id="kegiatan">
+  <div class="ghost" aria-hidden="true">KEGIATAN</div>
+  <div class="wrap">
+    <p class="eyebrow">活動 · Daftar Kegiatan</p>
+    <h2 class="serif">Kegiatan Pelayanan</h2>
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section class="layer2" id="layanan">
+  <div class="wrap">
+    <p class="eyebrow">業務 · Layanan</p>
+    <h2 class="serif">Ruang Lingkup Layanan</h2>
+    <ul class="srows" id="srows"></ul>
+  </div>
+</section>
+
+<section class="layer2 stats" id="statistik">
+  <div class="wrap">
+    <p class="eyebrow light">Ringkasan</p>
+    <h2 class="serif">Pelayanan dalam angka</h2>
+    <div class="sgrid">
+      <div class="rv"><span class="num" id="sKeg">0</span><span class="lbl">Kegiatan terunggah</span></div>
+      <div class="rv"><span class="num" id="sUnit">0</span><span class="lbl">Unit kerja</span></div>
+      <div class="rv"><span class="num" id="sKat">0</span><span class="lbl">Kategori layanan</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="layer2 tentang" id="tentang">
+  <div class="wrap">
+    <p class="eyebrow">Tentang</p>
+    <p class="big rv" style="margin-top:1.5rem">Kami melayani dengan ketelitian dan kehangatan. Setiap kegiatan <span>dicatat, ditampilkan, dan dapat dipertanggungjawabkan.</span></p>
+  </div>
+</section>
+
+<section class="stack" id="galeri"><div id="stackWrap"></div></section>
+
+
+
+
+
+<section class="sc" id="scan">
+  <div class="wrap">
+    <p class="eyebrow light">Dokumentasi Pemindaian</p>
+    <h2 class="sc-title">Setiap kegiatan, <span>terungkap oleh cahaya.</span></h2>
+    <p class="sc-lead">Foto masuk dari sisi kanan dalam keadaan utuh. Saat melewati garis pemindai, foto memudar dan terurai menjadi aksara Jepang yang bercahaya.</p>
+  </div>
+  <div class="sc-stage" id="scStage">
+    <p class="sc-empty" id="scEmpty" hidden></p>
+    <div class="sc-track" id="scTrack"></div>
+    <div class="sc-beam"></div>
+    <div class="sc-petals" id="scPetals"></div>
+  </div>
+  <div class="sc-controls">
+    <button class="sc-btn primary" id="scToggle">Jeda animasi</button>
+    <button class="sc-btn" id="scSlower">Perlambat</button>
+    <button class="sc-btn" id="scFaster">Percepat</button>
+    <span class="sc-status" id="scSpeed">55 px/detik</span>
+  </div>
+</section>
+
+<footer class="dark" id="kontak">
+  <canvas id="starfield" class="starfield" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="docs">
+      <div class="docs-head">
+        <p class="eyebrow light">Dokumentasi Kegiatan</p>
+        <div class="docs-nav">
+          <button id="dPrev" aria-label="Sebelumnya">‹</button><button id="dNext" aria-label="Berikutnya">›</button>
+        </div>
+      </div>
+      <div class="docs-track" id="docsTrack"></div>
+      <div class="docs-bar"><span id="docsBar"></span></div>
+    </div>
+    <div class="fcta">
+      <div>
+        <p class="eyebrow light">Hubungi Kami</p>
+        <h2>Ada yang ingin disampaikan?</h2>
+      </div>
+      <button class="pill" id="openReq">Ajukan Pertanyaan →</button>
+    </div>
+    <div class="fcols">
+      <div>
+        <strong class="serif" style="font-size:1.2rem">桜 · Unit Kerja Pelayanan</strong>
+        <p>Melayani dengan harmoni, dicatat dengan rapi.</p>
+      </div>
+      <div>
+        <h4>Navigasi</h4>
+        <a href="#beranda">Beranda</a>
+        <a href="#kegiatan">Kegiatan</a>
+        <a href="#statistik">Statistik</a>
+        <a href="#tentang">Tentang</a>
+      </div>
+    </div>
+    <p class="fbot">© 2026 Unit Kerja Pelayanan</p>
+  </div>
+</footer>
+
+<div class="modal" id="reqModal" hidden>
+  <div class="mpanel">
+    <button class="x" id="closeReq" aria-label="Tutup">×</button>
+    <div id="reqForm">
+      <p class="eyebrow">Pertanyaan</p>
+      <h3>Tulis pesan Anda</h3>
+      <label for="rNama">Nama</label><input id="rNama" placeholder="Nama lengkap">
+      <label for="rEmail">Email</label><input id="rEmail" type="email" placeholder="nama@email.com">
+      <label for="rPesan">Pesan</label><textarea id="rPesan" placeholder="Tulis pertanyaan atau masukan..."></textarea>
+      <button class="send" id="reqSend">Kirim</button>
+    </div>
+    <div id="reqOk" hidden><h3>Pesan diterima</h3><p>Terima kasih. Kami akan menghubungi Anda kembali.</p></div>
+  </div>
+</div>
+
+
+<script src="scripts/00-hero.js"></script>
+<script src="scripts/01-core.js"></script>
+<script src="scripts/02-activities.js"></script>
+<script src="scripts/03-services-stats.js"></script>
+<script src="scripts/04-clock.js"></script>
+<script src="scripts/05-modal.js"></script>
+<script src="scripts/06-gallery.js"></script>
+<script src="scripts/06b-starfield.js"></script>
+<script src="scripts/06c-docs.js"></script>
+<script src="scripts/06d-scan.js"></script>
+<script src="scripts/07-init.js"></script>
+</body>
+</html>
