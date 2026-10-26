@@ -1,0 +1,38 @@
+/* ---- Card scan sakura cyber (section terakhir sebelum footer) ---- */
+.sc{position:relative;margin:0 .75rem;border-radius:2rem 2rem 0 0;overflow:hidden;color:#fbeef4;padding:4.5rem 0 2rem;font-family:"Noto Sans JP",system-ui,sans-serif;background:radial-gradient(ellipse at 50% 30%,rgba(160,66,112,.19),transparent 42%),radial-gradient(ellipse at 12% 85%,rgba(106,51,100,.15),transparent 35%),linear-gradient(135deg,#171019,#0c080d 70%)}
+.sc .wrap{position:relative;z-index:2}
+.sc .eyebrow.light::before{background:#f29bbd}
+.sc-title{font-family:"Shippori Mincho",serif;font-weight:400;font-size:clamp(1.9rem,4vw,3rem);line-height:1.15;margin:.9rem 0 .6rem;max-width:760px}
+.sc-title span{color:#ffc5dc}
+.sc-lead{color:#c79bb1;font-size:.9rem;line-height:1.8;max-width:620px}
+.sc-stage{position:relative;height:clamp(360px,52vw,510px);margin-top:1.5rem;overflow:hidden;isolation:isolate;border-top:1px solid rgba(242,155,189,.09);border-bottom:1px solid rgba(242,155,189,.09)}
+.sc-stage:before,.sc-stage:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3}
+.sc-stage:before{background:linear-gradient(90deg,#100b12 0%,transparent 13%,transparent 87%,#100b12 100%)}
+.sc-stage:after{background:radial-gradient(ellipse at center,transparent 30%,rgba(7,4,8,.2) 100%)}
+.sc-empty{position:absolute;inset:0;z-index:4;display:grid;place-items:center;color:rgba(255,255,255,.6);font-size:14px;margin:0}
+.sc-empty[hidden]{display:none}
+.sc-track{position:absolute;left:0;top:50%;height:clamp(300px,42vw,390px);transform:translateY(-50%);display:flex;gap:34px;will-change:transform}
+.sc-card{position:relative;flex:0 0 clamp(220px,24vw,300px);height:100%;overflow:hidden;border:1px solid rgba(242,155,189,.22);border-radius:24px;background:#171019;box-shadow:0 18px 50px #0006;isolation:isolate}
+.sc-chip{position:absolute;inset:0;z-index:0;background:repeating-linear-gradient(0deg,transparent 0 12px,rgba(242,155,189,.055) 13px 14px),repeating-linear-gradient(90deg,transparent 0 17px,rgba(242,155,189,.07) 18px 19px),linear-gradient(135deg,#261622,#100b12 75%)}
+.sc-chip:before{content:"桜光夢風雲龍水火空心和道未来電脳夜花月雪京炎鋼刃";position:absolute;inset:12px;word-break:break-all;line-height:1.75;letter-spacing:.3em;color:#f29bbd30;font-size:16px}
+.sc-photo{position:absolute;inset:0;z-index:1;background-size:cover;background-position:center;background-color:#2a1a28;opacity:.88;clip-path:inset(0 0 0 0);filter:saturate(.88) contrast(1.04)}
+.sc-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,8,13,.03) 25%,rgba(12,8,13,.88) 100%)}
+.sc-glyphs{position:absolute;inset:0;z-index:2;display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(13,1fr);padding:12px;gap:1px;pointer-events:none;mask-image:linear-gradient(90deg,#000 0%,#000 72%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 72%,transparent 100%)}
+.sc-glyphs span{font-size:clamp(10px,1.2vw,15px);color:rgba(242,155,189,.2);text-align:center;align-self:center}
+.sc-edge{position:absolute;top:0;bottom:0;width:38px;z-index:3;pointer-events:none;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(255,208,224,.48),rgba(255,134,190,.2),transparent);filter:blur(4px);opacity:0}
+.sc-info{position:absolute;z-index:4;left:22px;right:20px;bottom:22px;text-shadow:0 2px 12px #000;pointer-events:none}
+.sc-tag{font-size:10px;letter-spacing:.19em;color:#ffc3da;text-transform:uppercase}
+.sc-info h2{font-family:"Shippori Mincho",serif;font-weight:400;font-size:23px;line-height:1.25;margin:9px 0}
+.sc-info p{font-size:11px;color:#e4c7d5;margin:0}
+.sc-beam{position:absolute;z-index:5;top:50%;left:30%;height:clamp(300px,42vw,390px);width:1px;transform:translate(-50%,-50%);pointer-events:none;background:linear-gradient(180deg,transparent,rgba(255,208,224,.7) 8%,#fff 50%,rgba(255,208,224,.7) 92%,transparent);box-shadow:0 0 7px 2px #ffd0e0,0 0 25px 8px #ff8dbd88,0 0 90px 20px #ff8dbd35}
+.sc-beam:after{content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 10px 5px #fff,0 0 28px 12px #ff9fc8}
+.sc-petals{position:absolute;inset:0;pointer-events:none;z-index:6;overflow:hidden}
+.sc-petal{position:absolute;width:7px;height:11px;border-radius:80% 0 80% 0;background:#f29bbd77;animation:scfall linear infinite}
+@keyframes scfall{from{transform:translate3d(0,-30px,0) rotate(0)}to{transform:translate3d(65px,520px,0) rotate(300deg)}}
+.sc-controls{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:1.5rem}
+.sc-btn{border:1px solid rgba(242,155,189,.35);background:#241622;color:#fbeef4;padding:10px 16px;border-radius:999px;font:inherit;font-size:12px;cursor:pointer;transition:background .25s,border-color .25s,transform .25s}
+.sc-btn:hover{background:#422237;border-color:#f29bbd;transform:translateY(-1px)}
+.sc-btn.primary{background:#f29bbd;color:#1a0c14;border-color:#f29bbd;font-weight:700}
+.sc-status{color:#ffd0e0;min-width:90px;font-size:11px;text-align:center}
+@media(max-width:600px){.sc-track{gap:24px}.sc-card{border-radius:20px}.sc-beam{height:300px}.sc-info{left:17px;bottom:18px}.sc-info h2{font-size:20px}.sc-glyphs{padding:8px}}
+@media(prefers-reduced-motion:reduce){.sc-petal{display:none}.sc-btn{transition:none}}

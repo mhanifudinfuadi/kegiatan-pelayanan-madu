@@ -1,0 +1,9 @@
+:root{--indigo:#1b2a4a;--indigo-deep:#0f1a33;--sakura:#f7c6d3;--sakura-deep:#e58fa6;--vermilion:#d9473f;--paper:#faf6f1;--ink:#14161f;--ink-soft:#6b6f7d;--hairline:#e6e0d8;--ghost:#ece3e6;--radius:1.5rem}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Onest",system-ui,sans-serif;background:radial-gradient(ellipse at 20% 0%,#fdfaf6 0%,#f5eee8 55%,#ebe3e8 100%);min-height:100vh;color:var(--ink);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.serif{font-family:"Zen Old Mincho",serif}
+.wrap{max-width:1200px;margin:0 auto;padding:0 1.25rem}

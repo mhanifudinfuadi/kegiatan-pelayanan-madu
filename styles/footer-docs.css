@@ -1,0 +1,21 @@
+/* footer: latar starfield + dokumentasi bergeser */
+footer.dark{position:relative;overflow:hidden;background:#0a0a24}
+footer.dark .wrap{position:relative;z-index:1}
+.starfield{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+.docs{margin-bottom:3.5rem}
+.docs-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;gap:1rem}
+.docs-nav button{width:2.6rem;height:2.6rem;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(10,10,36,.4);color:#fff;font-size:1.3rem;margin-left:.5rem;transition:background .3s,color .3s}
+.docs-nav button:hover{background:#fff;color:#0f1a33}
+.docs-track{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:.5rem}
+.docs-track::-webkit-scrollbar{display:none}
+.dcard{flex:0 0 min(78vw,320px);scroll-snap-align:start;border-radius:1.5rem;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.dcard:hover{transform:translateY(-6px)}
+.dm{height:180px;position:relative;overflow:hidden;background:linear-gradient(160deg,#24386a,#e58fa6)}
+.dm img{width:100%;height:100%;object-fit:cover}
+.db{padding:1.1rem 1.2rem 1.3rem;color:#fff}
+.dmeta{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.db h4{font-family:"Zen Old Mincho",serif;font-size:1.25rem;font-weight:700;margin:.5rem 0 .3rem;line-height:1.2}
+.dunit{font-size:.8rem;color:#f7c6d3}
+.docs-bar{position:relative;height:2px;background:rgba(255,255,255,.15);margin-top:1rem;border-radius:2px}
+.docs-bar span{position:absolute;top:0;bottom:0;background:#f7c6d3;border-radius:2px;transition:left .2s}
+.dempty{color:rgba(255,255,255,.6);padding:2rem}

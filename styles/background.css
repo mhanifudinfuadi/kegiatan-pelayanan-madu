@@ -1,0 +1,15 @@
+/* latar bernuansa Jepang (Ethereal) */
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.075;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Cg fill='none' stroke='%231b2a4a' stroke-width='.8'%3E%3Cpath d='M0 30a30 30 0 0 1 60 0M10 30a20 20 0 0 1 40 0M20 30a10 10 0 0 1 20 0'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:60px 30px}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.32;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E")}
+.mist{position:fixed;width:62vmax;height:62vmax;border-radius:50%;filter:blur(96px);z-index:-3;pointer-events:none;animation:drift 28s ease-in-out infinite alternate}
+.m1{left:-22vmax;top:-14vmax;background:rgba(27,42,74,.16)}
+.m2{right:-20vmax;bottom:-16vmax;background:rgba(247,198,211,.42);animation-duration:34s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(8vw,6vh) scale(1.12)}}
+.jp-vert{position:fixed;right:1.1rem;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-family:"Zen Old Mincho",serif;font-size:.95rem;letter-spacing:.5em;color:rgba(27,42,74,.25);z-index:-1;pointer-events:none;user-select:none}
+::selection{background:var(--sakura);color:var(--indigo-deep)}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--vermilion);outline-offset:3px}
+@media(max-width:768px){.jp-vert{display:none}}
+@media(prefers-reduced-motion:reduce){.mist{animation:none}}
