@@ -1,5 +1,5 @@
 (async () => {
-  db = await cap('db');
+  db = window.firebaseDb ? window.firebaseDb() : null;
   if (db) {
     db.collection('activities').onSnapshot(snap => { items = toArray(snap); render(); });
     db.collection('site').onSnapshot(snap => {

@@ -12,7 +12,7 @@ unit-kerja-dev/
 ├─ DESIGN.md                  panduan desain
 ├─ README.md
 ├─ .vscode/extensions.json    rekomendasi ekstensi (Live Server)
-├─ styles/                    CSS per komponen
+├─ styles/                    CSS per komponen (admin.css untuk halaman admin)
 │  ├─ base.css                token warna, reset, kelas dasar
 │  ├─ header-hero.css         header, hero, video, kelopak sakura
 │  ├─ activities.css          chip filter, grid, kartu kegiatan
@@ -34,6 +34,10 @@ unit-kerja-dev/
 │  ├─ 06c-docs.js             kartu dokumentasi bergeser di footer
 │  ├─ 06d-scan.js             card scan sakura cyber
 │  └─ 07-init.js              ambil db, langganan data kegiatan dan caption
+├─ admin.html                 halaman admin
+├─ firestore.rules            aturan akses Firestore
+├─ storage.rules              aturan akses Storage
+├─ SETUP-FIREBASE.md          langkah setup Firebase dan Vercel
 ├─ assets/moon-hero.mp4       video latar hero
 └─ upscale/upscale.py         skrip upscale gambar dan video
 ```
@@ -49,18 +53,25 @@ unit-kerja-dev/
 7. Card scan (`#scan`): kartu pemindaian sakura cyber
 8. Footer (`#kontak`): starfield, kartu dokumentasi, ajakan, tautan
 
+## Halaman
+
+- `index.html`: halaman publik (membaca data dari Firebase)
+- `admin.html`: halaman admin (login, tambah dan hapus kegiatan, caption). Lihat `SETUP-FIREBASE.md`.
+
 ## Menjalankan
 
 1. Buka folder `unit-kerja-dev` di VS Code.
 2. Pasang Live Server, lalu klik kanan `index.html` → **Open with Live Server**.
 
-Dibutuhkan koneksi internet untuk Google Fonts, Three.js dari jsDelivr, dan
-foto kegiatan dari URL penyimpanan.
+Dibutuhkan koneksi internet untuk Google Fonts, Three.js dari jsDelivr, Firebase
+dari gstatic, dan foto kegiatan dari Firebase Storage. Sebelum data tampil, isi
+`scripts/firebase-config.js` dan terapkan aturan keamanan. Panduan lengkap ada di
+`SETUP-FIREBASE.md`.
 
-## Batasan versi lokal
+## Batasan
 
-- Tidak terhubung ke database claude.ai. Kegiatan dan caption tidak tampil,
-  sedangkan layout, video, latar, dan komponen statis tetap berjalan.
+- Sebelum `firebase-config.js` diisi, kegiatan dan caption tidak tampil. Layout,
+  video, latar, dan komponen statis tetap berjalan.
 - Halaman belum dibandingkan secara visual dengan artifact di claude.ai. Periksa
   bagian scan, starfield, dan galeri di desktop dan ponsel.
 

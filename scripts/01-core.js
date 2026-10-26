@@ -2,9 +2,6 @@ const $ = s => document.querySelector(s);
 const h = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 let items = [], filter = 'Semua', db = null;
 
-async function cap(name) {
-  try { return window.claude ? await window.claude.use(name) : null; } catch (e) { return null; }
-}
 
 function toArray(snap) {
   const docs = snap?.docs ?? snap ?? [];

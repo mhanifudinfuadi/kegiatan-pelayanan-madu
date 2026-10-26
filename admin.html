@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Admin · Pelayanan Unit Kerja</title>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&family=Zen+Old+Mincho:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/admin.css">
+</head>
+<body>
+<main class="adm">
+  <header class="adm-top">
+    <strong>桜 · Admin Pelayanan</strong>
+    <button id="logout" class="ghost" hidden>Keluar</button>
+  </header>
+
+  <section id="login" class="card narrow">
+    <h1>Masuk</h1>
+    <label for="email">Email</label><input id="email" type="email" autocomplete="username">
+    <label for="pass">Kata sandi</label><input id="pass" type="password" autocomplete="current-password">
+    <button id="loginBtn" class="primary">Masuk</button>
+  </section>
+
+  <section id="panel" hidden>
+    <div class="card">
+      <h2>Tambah kegiatan</h2>
+      <div class="grid">
+        <div><label for="fJudul">Judul</label><input id="fJudul" placeholder="Contoh: Bakti Sosial Oktober"></div>
+        <div><label for="fTanggal">Tanggal</label><input id="fTanggal" type="date"></div>
+        <div><label for="fUnit">Unit kerja</label><input id="fUnit"></div>
+        <div><label for="fKategori">Kategori</label><input id="fKategori" placeholder="Contoh: Sosial"></div>
+        <div class="full"><label for="fDeskripsi">Deskripsi</label><textarea id="fDeskripsi"></textarea></div>
+        <div class="full"><label for="fFoto">Foto (maksimal 5 MB, JPG/PNG/WEBP)</label><input id="fFoto" type="file" accept="image/*"></div>
+      </div>
+      <button id="saveBtn" class="primary">Simpan kegiatan</button>
+    </div>
+
+    <div class="card">
+      <h2>Caption hero</h2>
+      <p class="muted" id="capNow"></p>
+      <input id="fCaption" placeholder="Tulis caption baru">
+      <button id="capBtn" class="primary">Simpan caption</button>
+    </div>
+
+    <div class="card">
+      <h2>Daftar kegiatan</h2>
+      <div id="alist"></div>
+    </div>
+  </section>
+
+  <p id="msg" class="msg" role="status"></p>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script src="scripts/firebase-config.js"></script>
+<script src="scripts/admin.js"></script>
+</body>
+</html>
