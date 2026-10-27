@@ -41,7 +41,6 @@ export function Hero({ caption }: HeroProps) {
         muted
         loop
         playsInline
-        poster="/images/hero-poster.jpg"
         aria-hidden="true"
       >
         <source src="/videos/moon-walk.mp4" type="video/mp4" />
