@@ -1,5 +1,7 @@
 "use client"
 
+"use client"
+
 import { useState, useEffect } from "react"
 import { getCurrentUser, supabase } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
