@@ -1,0 +1,16 @@
+/* Dibuat dari design-tokens.json — ubah keduanya bersamaan */
+:root {
+  --space-deep: #0A0420;
+  --space-violet: #1B0B45;
+  --nebula-purple: #3A1A7A;
+  --nebula-magenta: #7B3FB8;
+  --flower-blue: #3D8BFF;
+  --flower-bright: #8FD0FF;
+  --flower-shade: #2A6BE0;
+  --glow-halo: #2F6BFF;
+  --star-white: #FFFFFF;
+
+  --flower-pos-desktop: 62% 40%;
+  --flower-pos-mobile: 55% 30%;
+  --nebula-drift: 90s;
+}

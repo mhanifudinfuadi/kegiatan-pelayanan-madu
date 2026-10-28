@@ -1,0 +1,26 @@
+{
+  "color": {
+    "space": { "deep": "#0A0420", "violet": "#1B0B45" },
+    "nebula": { "purple": "#3A1A7A", "magenta": "#7B3FB8" },
+    "flower": { "base": "#3D8BFF", "bright": "#8FD0FF", "shade": "#2A6BE0" },
+    "glow": { "halo": "#2F6BFF" },
+    "star": { "white": "#FFFFFF" }
+  },
+  "layout": {
+    "flowerPosition": { "desktop": "62% 40%", "mobile": "55% 30%" },
+    "breakpointMobile": "767px"
+  },
+  "stars": {
+    "count": { "desktop": 750, "mobile": 300 },
+    "radius": { "min": 0.4, "max": 1.6 },
+    "opacity": { "min": 0.45, "max": 0.95 }
+  },
+  "motion": {
+    "nebulaDriftSeconds": 90,
+    "twinkleAmplitude": 0.25
+  },
+  "blend": {
+    "flowerWrapper": "screen",
+    "tint": "color"
+  }
+}

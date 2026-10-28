@@ -50,10 +50,10 @@ export function Hero({ caption }: HeroProps) {
       <div className="mist m2" />
 
       <div className="hero-text" ref={textRef}>
-        <p className="jp">桜 · 雪 · 月 · 花</p>
-        <h1>Pelayanan<br />Unit Kerja</h1>
+        <p className="jp">桜 · 雪 · 富士 · 河口湖</p>
+        <h1>Kegiatan Pelayanan<br />Documented</h1>
         <p className="caption rv">
-          {caption || "Kawaguchiko — di tepi danau, di bawah bulan purnama, setiap kegiatan adalah satu langkah menuju kebaikan bersama."}
+          {caption || "Thou art my rarest exception. — di tepi danau, di bawah bulan purnama, setiap kegiatan adalah satu langkah menuju kebaikan bersama."}
         </p>
         <a href="#kegiatan" className="btn rv" ref={btnRef}>
           Lihat Kegiatan

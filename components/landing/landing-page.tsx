@@ -10,6 +10,7 @@ import { Layanan } from "./layanan"
 import { Statistik } from "./statistik"
 import { Tentang } from "./tentang"
 import { Galeri } from "./galeri"
+import { GalaxyBackdrop } from "./galaxy-backdrop"
 import { CardScan } from "./card-scan"
 import { Footer } from "./footer"
 import { SakuraPetals } from "./sakura-petals"
@@ -77,6 +78,7 @@ export function LandingPage() {
       <Statistik activities={activities} />
       <Tentang />
       <Galeri activities={activities} />
+      <GalaxyBackdrop />
       <CardScan activities={activities} />
       <Footer />
     </main>

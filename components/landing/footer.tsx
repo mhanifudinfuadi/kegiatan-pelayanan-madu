@@ -1,14 +1,10 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import * as THREE from "three"
 
 export function Footer() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" })
-  const threeRef = useRef<{ scene: THREE.Scene; camera: THREE.OrthographicCamera; renderer: THREE.WebGLRenderer; particles: THREE.Points | null } | null>(null)
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -67,8 +63,6 @@ export function Footer() {
     const particles = new THREE.Points(geometry, material)
     scene.add(particles)
 
-    threeRef.current = { scene, camera, renderer, particles }
-
     const animate = () => {
       const positions = particles.geometry.attributes.position.array as Float32Array
       for (let i = 0; i < particleCount; i++) {
@@ -104,101 +98,44 @@ export function Footer() {
     }
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => {
-      setModalOpen(false)
-      setSubmitted(false)
-      setFormData({ name: "", email: "", message: "" })
-    }, 2000)
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
-  }
-
   return (
-    <footer className="dark" id="kontak">
-      <canvas ref={canvasRef} className="starfield" aria-hidden="true" />
+    <footer className="dark" id="kontak" style={{ background: "#090B20", color: "#F3EBDD" }}>
+      <canvas ref={canvasRef} className="starfield" aria-hidden="true" style={{ pointerEvents: "none" }} />
 
-      <div className="wrap">
-        <div className="fcta">
-          <div>
-            <h2>Kawaguchiko</h2>
-            <p>Pelayanan Unit Kerja yang tenang dan etereal.</p>
-          </div>
-          <button className="pill" onClick={() => setModalOpen(true)}>
-            Tanya →
-          </button>
-        </div>
+      <div style={{ maxWidth: 1440, margin: "0 auto", padding: "clamp(56px,8vw,112px) clamp(24px,5vw,80px)", position: "relative", zIndex: 1 }}>
+        <p style={{ letterSpacing: ".2em", color: "#E9B6C9", fontSize: ".8rem", textTransform: "uppercase" }}>私の静かな宇宙 · MY QUIET UNIVERSE</p>
+        <h2 style={{ fontSize: "clamp(3rem,7vw,6.5rem)", fontFamily: "serif", margin: ".5rem 0" }}>And Then, There Was You.</h2>
+        <p style={{ color: "#E9B6C9", fontSize: "1rem" }}>そして、君がいた。</p>
+        <p style={{ color: "#8F8BA8", maxWidth: "42rem", lineHeight: 1.7, marginTop: "1rem" }}>Of all the things this world has given me, you are the one I was never prepared to feel.</p>
 
-        <div className="fcols">
+        <hr style={{ border: 0, borderTop: "1px solid rgba(243,235,221,.14)", margin: "2rem 0" }} />
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
           <div>
-            <h4>Navigasi</h4>
-            <a href="#beranda">Beranda</a>
-            <a href="#kegiatan">Kegiatan</a>
-            <a href="#statistik">Statistik</a>
-            <a href="#tentang">Tentang</a>
-            <a href="#galeri">Galeri</a>
-            <a href="#scan">Scan</a>
+            <p style={{ maxWidth: "42rem", lineHeight: 1.7, color: "#F3EBDD" }}>I used to believe that a man could keep his world in order, that every feeling had its place and every longing its end. Then you came along, and suddenly, even silence began to speak your name.</p>
+            <p style={{ color: "#8F8BA8", marginTop: "1rem" }}>— where My World Unravels</p>
           </div>
           <div>
-            <h4>Kontak</h4>
-            <a href="#">info@kawaguchiko.example</a>
-            <a href="#">+62 812 0000 0000</a>
-            <a href="#">Jl. Danau Kawaguchiko, Yamanashi</a>
+            <h4 style={{ color: "#E9B6C9", letterSpacing: ".15em", fontSize: "1rem" }}>EXPLORE</h4>
+            <nav style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".1rem 1rem", marginTop: "1rem", fontSize: ".95rem" }}>
+              <a href="#beranda" style={{ color: "#F3EBDD", gridColumn: "1 / -1" }}>Beranda</a>
+              <a href="#kegiatan" style={{ color: "#F3EBDD" }}>Kegiatan</a>
+              <a href="#statistik" style={{ color: "#F3EBDD" }}>Statistik</a>
+              <p style={{ gridColumn: "1 / -1", textAlign: "center", color: "#E9B6C9", margin: "0", whiteSpace: "pre-line", lineHeight: 1.2 }}>somehow you{"\n"}feels like home</p>
+              <a href="#tentang" style={{ color: "#F3EBDD" }}>Tentang</a>
+              <a href="#galeri" style={{ color: "#F3EBDD" }}>Galeri</a>
+              <a href="#scan" style={{ color: "#F3EBDD", gridColumn: "1 / -1" }}>Scan</a>
+            </nav>
           </div>
         </div>
 
-        <div className="fbot">
-          <p>© 2026 Kawaguchiko — Dibuat dengan tenaga.</p>
+        <hr style={{ border: 0, borderTop: "1px solid rgba(243,235,221,.14)", margin: "2rem 0" }} />
+
+        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", color: "#8F8BA8" }}>
+          <p>The world remains. I am simply no longer quite the same.</p>
+          <p>© {new Date().getFullYear()}Tanah Abang, Made with quiet devotion.</p>
         </div>
       </div>
-
-      {modalOpen && (
-        <div className="modal" onClick={() => setModalOpen(false)}>
-          <div className="mpanel" onClick={(e) => e.stopPropagation()}>
-            <button className="x" onClick={() => setModalOpen(false)}>×</button>
-            {submitted ? (
-              <div style={{ textAlign: "center", padding: "2rem 0" }}>
-                <h3>Pesan diterima</h3>
-                <p>Terima kasih atas pertanyaan Anda.</p>
-              </div>
-            ) : (
-              <>
-                <h3>Tanya</h3>
-                <form onSubmit={handleSubmit}>
-                  <label>Nama</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                  <label>Pesan</label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                  />
-                  <button type="submit" className="send">Kirim</button>
-                </form>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </footer>
   )
 }

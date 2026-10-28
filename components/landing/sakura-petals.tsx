@@ -10,7 +10,7 @@ export function SakuraPetals() {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) return
 
-    const newPetals = Array.from({ length: 12 }, (_, i) => ({
+    const newPetals = Array.from({ length: 24 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 18,
@@ -21,7 +21,7 @@ export function SakuraPetals() {
   }, [])
 
   return (
-    <div className="petals" aria-hidden="true">
+    <div className="petals" aria-hidden="true" style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 2, overflow: "hidden" }}>
       {petals.map((petal) => (
         <div
           key={petal.id}

@@ -23,7 +23,7 @@ export function Header() {
 
   return (
     <header className="top">
-      <a href="#beranda" className="brand">Kawaguchiko</a>
+      <a href="#beranda" className="brand">Thou art my rarest exception.</a>
       <nav>
         <span className="clock">{time}</span>
         <a href="#kegiatan">Kegiatan</a>
