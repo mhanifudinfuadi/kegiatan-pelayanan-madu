@@ -1,7 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import * as THREE from "three"
+import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import { Header } from "./header"
 import { Hero } from "./hero"
@@ -20,24 +19,19 @@ export function LandingPage() {
   const [caption, setCaption] = useState<string>("")
   const [loading, setLoading] = useState(true)
 
+  // Backsound dipasang terpisah agar tidak menahan render halaman
+
+  // Muat data setelah mount; fetchData sengaja tidak dipanggil saat render
   useEffect(() => {
-    const play = async () => {
-      try {
-        const a1 = new Audio("/audio/Natawassal%20Bil%20Hubabah.mp3")
-        a1.volume = 0.25
-        await a1.play()
-        a1.onended = async () => {
-          const a2 = new Audio("/audio/CASABLANCA.mp3")
-          a2.volume = 0.2
-          a2.playbackRate = 0.85
-          try { await a2.play() } catch {}
-        }
-      } catch {}
-    }
-    play()
+    fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fetchData = async () => {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      setLoading(false)
+      return
+    }
     try {
       // Fetch activities
       const { data: acts, error: actsError } = await supabase
@@ -70,17 +64,6 @@ export function LandingPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#faf6f1] flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#1b2a4a] border-t-[#e58fa6] rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-[#6b6f7d]">Memuat...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <main>
       <SakuraPetals />
@@ -94,6 +77,18 @@ export function LandingPage() {
       <GalaxyBackdrop />
       <CardScan activities={activities} />
       <Footer />
+
+      {/* Indikator kecil saat data masih dimuat; halaman tetap tampil */}
+      {loading && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full bg-[#1b2a4a]/90 px-3 py-2 text-xs text-[#faf6f1] shadow-lg"
+        >
+          <span className="h-3 w-3 animate-spin rounded-full border-2 border-[#faf6f1]/40 border-t-[#e58fa6]" />
+          Memuat data…
+        </div>
+      )}
     </main>
   )
 }
