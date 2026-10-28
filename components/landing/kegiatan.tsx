@@ -56,7 +56,7 @@ export function Kegiatan({ activities }: KegiatanProps) {
       <div className="ghost">Kegiatan</div>
       <div className="wrap">
         <p className="eyebrow">Kegiatan</p>
-        <h2>Yang Telah Dibuat</h2>
+        <h2>Yang Telah Dilaksanakan</h2>
 
         <div className="chips">
           {categories.map((cat) => (

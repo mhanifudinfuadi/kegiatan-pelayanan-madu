@@ -21,7 +21,20 @@ export function LandingPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchData()
+    const play = async () => {
+      try {
+        const a1 = new Audio("/audio/Natawassal%20Bil%20Hubabah.mp3")
+        a1.volume = 0.25
+        await a1.play()
+        a1.onended = async () => {
+          const a2 = new Audio("/audio/CASABLANCA.mp3")
+          a2.volume = 0.2
+          a2.playbackRate = 0.85
+          try { await a2.play() } catch {}
+        }
+      } catch {}
+    }
+    play()
   }, [])
 
   const fetchData = async () => {

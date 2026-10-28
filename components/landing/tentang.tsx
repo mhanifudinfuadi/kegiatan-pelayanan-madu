@@ -28,7 +28,7 @@ export function Tentang() {
     <section className="tentang" id="tentang">
       <div className="wrap">
         <p className="big rv" ref={ref}>
-        Adakalanya<span> hal-hal sederhana</span>, menemukan maknanya ketika bersama<span> dan ada pertemuan yang meski tanpa kata, membuat waktu terasa lebih enggan berlalu.</span>.
+        Adakalanya<span> hal-hal sederhana</span>, menemukan maknanya ketika bersama<span> dan ada pertemuan yang meski tanpa kata, membuat waktu terasa lebih enggan berlalu..</span>...
         </p>
       </div>
     </section>
