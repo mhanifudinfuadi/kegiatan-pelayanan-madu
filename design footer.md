@@ -1,4 +1,4 @@
-# Design Specification --- Footer "And Then, There Was You."
+    # Design Specification --- Footer "And Then, There Was You."
 
 **Project:** Kawaguchiko\
 **Area:** Global website footer\
