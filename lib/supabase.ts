@@ -3,7 +3,14 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-if (!supabaseUrl || !supabaseAnonKey) {
+/**
+ * true bila kedua variabel lingkungan Supabase tersedia.
+ * Dipakai untuk melewati panggilan jaringan agar halaman tetap tampil
+ * saat env belum diisi (mis. preview deploy di Vercel).
+ */
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey)
+
+if (!isSupabaseConfigured) {
   console.warn('Supabase credentials not configured. Admin features will be disabled.')
 }
 

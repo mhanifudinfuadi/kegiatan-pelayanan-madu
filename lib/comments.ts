@@ -1,4 +1,4 @@
-import { supabase } from "./supabase"
+import { isSupabaseConfigured, supabase } from "./supabase"
 
 /** Satu komentar pada sebuah kegiatan (satu kegiatan = satu foto). */
 export interface Comment {
@@ -40,6 +40,8 @@ export function saveName(name: string) {
 }
 
 export async function fetchComments(activityId: string): Promise<Comment[]> {
+  // tanpa konfigurasi Supabase, kembalikan kosong alih-alih gagal jaringan
+  if (!isSupabaseConfigured) return []
   const { data, error } = await supabase
     .from("comments")
     .select("id, activity_id, parent_id, name, body, created_at")
@@ -51,6 +53,7 @@ export async function fetchComments(activityId: string): Promise<Comment[]> {
 }
 
 export async function fetchCommentCounts(): Promise<Record<string, number>> {
+  if (!isSupabaseConfigured) return {}
   const { data, error } = await supabase
     .from("comments")
     .select("activity_id, parent_id")
@@ -70,6 +73,7 @@ export async function addComment(input: {
   name: string
   body: string
 }): Promise<Comment> {
+  if (!isSupabaseConfigured) throw new Error("Layanan komentar belum dikonfigurasi.")
   const { data, error } = await supabase
     .from("comments")
     .insert({
@@ -88,6 +92,7 @@ export async function addComment(input: {
 }
 
 export async function deleteComment(id: string): Promise<void> {
+  if (!isSupabaseConfigured) throw new Error("Layanan komentar belum dikonfigurasi.")
   // lewat RPC: policy DELETE tidak bisa mencocokkan device_id pengunjung anonim
   const { data, error } = await supabase.rpc("delete_own_comment", {
     p_id: id,

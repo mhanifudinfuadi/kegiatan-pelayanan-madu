@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import * as THREE from "three"
-import { supabase } from "@/lib/supabase"
+import { isSupabaseConfigured, supabase } from "@/lib/supabase"
 
 const codeChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789(){}[]<>;:,._-+=!@#$%^&*|\\/\"'`~?"
 
@@ -52,6 +52,8 @@ export function CardScanner() {
   }, [])
 
   const fetchEventPhotos = async () => {
+    // tanpa konfigurasi Supabase, pakai foto bawaan
+    if (!isSupabaseConfigured) return
     try {
       const { data, error } = await supabase.storage
         .from('kegiatan-images')

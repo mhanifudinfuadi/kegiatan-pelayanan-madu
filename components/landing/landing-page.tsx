@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { supabase } from "@/lib/supabase"
+import { isSupabaseConfigured, supabase } from "@/lib/supabase"
 import { Header } from "./header"
 import { Hero } from "./hero"
 import { Kegiatan } from "./kegiatan"
@@ -13,6 +13,7 @@ import { GalaxyBackdrop } from "./galaxy-backdrop"
 import { CardScan } from "./card-scan"
 import { Footer } from "./footer"
 import { SakuraPetals } from "./sakura-petals"
+import { Backsound } from "./backsound"
 
 export function LandingPage() {
   const [activities, setActivities] = useState<any[]>([])
@@ -28,7 +29,8 @@ export function LandingPage() {
   }, [])
 
   const fetchData = async () => {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    // env belum diisi: tampilkan halaman apa adanya tanpa panggilan jaringan
+    if (!isSupabaseConfigured) {
       setLoading(false)
       return
     }
@@ -66,6 +68,7 @@ export function LandingPage() {
 
   return (
     <main>
+      <Backsound />
       <SakuraPetals />
       <Header />
       <Hero caption={caption} />
