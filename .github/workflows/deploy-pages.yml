@@ -20,15 +20,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Satu action ini sekaligus memasang pnpm (versi dibaca dari pnpm-lock.yaml)
+      # Versi pnpm ditulis eksplisit agar tidak bentrok dengan "packageManager" di package.json
       - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
 
-      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm install --no-frozen-lockfile --config.confirmModulesPurge=false
 
       # Halaman Pages adalah salinan statis.
       # middleware.ts dan route dinamis tidak didukung, jadi dilewati saat export.
