@@ -1,0 +1,61 @@
+name: Deploy ke GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Satu action ini sekaligus memasang pnpm (versi dibaca dari pnpm-lock.yaml)
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --no-frozen-lockfile
+
+      # Halaman Pages adalah salinan statis.
+      # middleware.ts dan route dinamis tidak didukung, jadi dilewati saat export.
+      - name: Build statis untuk Pages
+        run: |
+          rm -f middleware.ts
+          touch public/.nojekyll
+          GITHUB_PAGES=true pnpm exec next build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - run: touch out/.nojekyll
+
+      - name: Cek hasil build
+        run: test -f out/index.html && test -f out/404.html && echo "Artefak siap"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
