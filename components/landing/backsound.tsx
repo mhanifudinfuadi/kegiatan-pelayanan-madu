@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react"
 
+import { asset } from "@/lib/asset"
+
 /**
  * Backsound latar: lagu pertama diputar setelah halaman tampil (tidak memblokir
  * render), lalu lagu kedua menyusul saat lagu pertama selesai.
@@ -10,8 +12,8 @@ import { useEffect, useRef } from "react"
  * lalu dicoba lagi pada interaksi pertama pengunjung.
  */
 const TRACKS = [
-  { src: "/audio/Natawassal%20Bil%20Hubabah.mp3", volume: 0.25, rate: 1 },
-  { src: "/audio/CASABLANCA.mp3", volume: 0.2, rate: 0.85 },
+  { src: asset("/audio/Natawassal%20Bil%20Hubabah.mp3"), volume: 0.25, rate: 1 },
+  { src: asset("/audio/CASABLANCA.mp3"), volume: 0.2, rate: 0.85 },
 ]
 
 export function Backsound() {

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react"
 
+import { asset } from "@/lib/asset"
+
 interface HeroProps {
   caption?: string
 }
@@ -43,7 +45,7 @@ export function Hero({ caption }: HeroProps) {
         playsInline
         aria-hidden="true"
       >
-        <source src="/videos/moon-walk.mp4" type="video/mp4" />
+        <source src={asset("/videos/moon-walk.mp4")} type="video/mp4" />
       </video>
 
       <div className="mist m1" />

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
+import { asset } from '@/lib/asset'
+
 import './globals.css'
 import '../styles/base.css'
 import '../styles/background.css'
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
   description: 'Nuansa Jepang yang tenang dan etereal: biru malam Gunung Fuji dan Danau Kawaguchiko, sakura, kertas washi, dan kanji sebagai aksen.',
   generator: 'v0.app',
   icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    icon: [{ url: asset('/icon.svg'), type: 'image/svg+xml' }],
   },
 }
 
