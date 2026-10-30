@@ -4,8 +4,8 @@
 -- 1. Storage bucket for kegiatan images
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES (
-  'kegiatan-images',
-  'kegiatan-images',
+  'pelayanan-madu',
+  'pelayanan-madu',
   true,
   52428800, -- 50MB
   ARRAY['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml']

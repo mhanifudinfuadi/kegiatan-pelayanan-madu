@@ -56,7 +56,7 @@ export function CardScanner() {
     if (!isSupabaseConfigured) return
     try {
       const { data, error } = await supabase.storage
-        .from('kegiatan-images')
+        .from('pelayanan-madu')
         .list('', { limit: 100 })
       
       if (error) {
@@ -67,7 +67,7 @@ export function CardScanner() {
       if (data && data.length > 0) {
         const photoUrls = data.map(item => {
           const { data: { publicUrl } } = supabase.storage
-            .from('kegiatan-images')
+            .from('pelayanan-madu')
             .getPublicUrl(item.name)
           return publicUrl
         })

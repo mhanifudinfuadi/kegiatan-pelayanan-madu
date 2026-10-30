@@ -16,7 +16,7 @@ export function EditorToolbar({ user, selectedBucket, onBucketChange, onRefresh 
   const [menuOpen, setMenuOpen] = useState(false)
 
   const buckets = [
-    { id: "kegiatan-images", label: "Kegiatan Images" },
+    { id: "pelayanan-madu", label: "Kegiatan Images" },
     { id: "editor-uploads", label: "Editor Uploads" },
   ]
 

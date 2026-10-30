@@ -12,7 +12,7 @@ import { EditorCanvas } from "@/components/editor/canvas"
 export default function EditorPage() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const [selectedBucket, setSelectedBucket] = useState("kegiatan-images")
+  const [selectedBucket, setSelectedBucket] = useState("pelayanan-madu")
   const [files, setFiles] = useState<any[]>([])
   const [activities, setActivities] = useState<any[]>([])
   const [settings, setSettings] = useState<any>(null)

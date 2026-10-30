@@ -71,7 +71,7 @@ kegaiatan-pelayanan-madu/
 ## Database (Supabase)
 
 Buckets:
-- `kegiatan-images` — gambar kegiatan
+- `pelayanan-madu` — gambar kegiatan
 - `editor-uploads` — file editor (dokumen, gambar, dll)
 
 Tables:

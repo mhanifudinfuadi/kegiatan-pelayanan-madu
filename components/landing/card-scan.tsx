@@ -10,6 +10,7 @@ interface Activity {
   category: string
   description?: string
   image?: string
+  images?: string[]
 }
 
 interface CardScanProps {

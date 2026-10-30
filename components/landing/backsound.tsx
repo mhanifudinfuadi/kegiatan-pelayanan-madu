@@ -5,15 +5,15 @@ import { useEffect, useRef } from "react"
 import { asset } from "@/lib/asset"
 
 /**
- * Backsound latar: lagu pertama diputar setelah halaman tampil (tidak memblokir
- * render), lalu lagu kedua menyusul saat lagu pertama selesai.
+ * Backsound latar: memutar daftar lagu berurutan lalu kembali ke lagu pertama (loop/auto-replay terus-menerus tanpa henti).
  * Dibuat imperatif (bukan elemen <audio> di JSX) agar tidak ikut menahan
  * hidrasi/render halaman. Gagal autoplay (kebijakan browser) diabaikan diam-diam,
  * lalu dicoba lagi pada interaksi pertama pengunjung.
  */
 const TRACKS = [
-  { src: asset("/audio/Natawassal%20Bil%20Hubabah.mp3"), volume: 0.25, rate: 1 },
-  { src: asset("/audio/CASABLANCA.mp3"), volume: 0.2, rate: 0.85 },
+  { src: "/audio/Natawassal%20Bil%20Hubabah.mp3", volume: 0.25, rate: 1 },
+  { src: "/audio/CASABLANCA.mp3", volume: 0.2, rate: 0.85 },
+  { src: "/audio/Soulmate_spotdown.org.mp3", volume: 0.25, rate: 1 },
 ]
 
 export function Backsound() {
@@ -42,8 +42,8 @@ export function Backsound() {
     }
 
     audio.onended = () => {
-      if (cancelled || index >= TRACKS.length - 1) return
-      index += 1
+      if (cancelled) return
+      index = (index + 1) % TRACKS.length
       startedRef.current = false
       play()
     }

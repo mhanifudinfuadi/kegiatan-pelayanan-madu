@@ -7,6 +7,7 @@ import { Hero } from "./hero"
 import { Kegiatan } from "./kegiatan"
 import { Layanan } from "./layanan"
 import { Statistik } from "./statistik"
+import { DokumentasiCarousel } from "./dokumentasi-carousel"
 import { Tentang } from "./tentang"
 import { Galeri } from "./galeri"
 import { GalaxyBackdrop } from "./galaxy-backdrop"
@@ -72,13 +73,16 @@ export function LandingPage() {
       <SakuraPetals />
       <Header />
       <Hero caption={caption} />
+      {/* Card Scan (Pindai Kegiatan) dipindahkan tepat di bawah section bunga motion (hero) */}
+      <CardScan activities={activities} />
       <Kegiatan activities={activities} />
       <Layanan activities={activities} />
       <Statistik activities={activities} />
+      {/* Dokumentasi foto alternatif tepat di bawah statistik angka naik */}
+      <DokumentasiCarousel activities={activities} />
       <Tentang />
       <Galeri activities={activities} />
       <GalaxyBackdrop />
-      <CardScan activities={activities} />
       <Footer />
 
       {/* Indikator kecil saat data masih dimuat; halaman tetap tampil */}

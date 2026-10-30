@@ -13,6 +13,13 @@ export default function AdminUpload() {
   const [uploading, setUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [message, setMessage] = useState("")
+  const [formData, setFormData] = useState({
+    title: "",
+    date: "",
+    unit: "",
+    category: "Pajak Bertutur",
+    description: "",
+  })
   const router = useRouter()
 
   useEffect(() => {
@@ -37,44 +44,68 @@ export default function AdminUpload() {
 
   const handleUpload = async () => {
     if (selectedFiles.length === 0) {
-      setMessage("Please select files to upload")
+      setMessage("Pilih setidaknya satu file untuk diunggah")
       return
     }
 
     setUploading(true)
     setUploadProgress(0)
-    
-    const uploadedUrls: string[] = []
-    
-    for (let i = 0; i < selectedFiles.length; i++) {
-      const file = selectedFiles[i]
-      const fileExt = file.name.split('.').pop()
-      const fileName = `ke${Date.now()}-${i}.${fileExt}`
-      
-      const { data, error } = await supabase.storage
-        .from('kegiatan-images')
-        .upload(fileName, file, {
-          cacheControl: '3600',
-          upsert: false
-        })
-      
-      if (error) {
-        setMessage(`Error uploading ${file.name}: ${error.message}`)
-        setUploading(false)
-        return
+
+    try {
+      const uploadedUrls: string[] = []
+
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const file = selectedFiles[i]
+        const fileExt = file.name.split(".").pop()
+        const fileName = `ke-${Date.now()}-${i}.${fileExt}`
+
+        const { data, error } = await supabase.storage
+          .from("pelayanan-madu")
+          .upload(fileName, file, {
+            cacheControl: "3600",
+            upsert: false,
+          })
+
+        if (error) {
+          setMessage(`Gagal mengunggah ${file.name}: ${error.message}`)
+          setUploading(false)
+          return
+        }
+
+        const { data: publicUrl } = supabase.storage
+          .from("pelayanan-madu")
+          .getPublicUrl(data.path)
+
+        uploadedUrls.push(publicUrl.publicUrl)
+        setUploadProgress(((i + 1) / selectedFiles.length) * 100)
       }
-      
-      const { data: publicUrl } = supabase.storage
-        .from('kegiatan-images')
-        .getPublicUrl(data.path)
-      
-      uploadedUrls.push(publicUrl.publicUrl)
-      setUploadProgress(((i + 1) / selectedFiles.length) * 100)
+
+      // Simpan kegiatan ke tabel activities agar foto muncul di laman web
+      const { error: dbError } = await supabase.from("activities").insert([
+        {
+          title: formData.title || selectedFiles.map((f) => f.name).join(", "),
+          date: formData.date || new Date().toISOString().slice(0, 10),
+          unit: formData.unit || "Admin",
+          category: formData.category || "Pajak Bertutur",
+          description: formData.description || "",
+          image: uploadedUrls[0] || "",
+          images: uploadedUrls,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+      ])
+
+      if (dbError) throw dbError
+
+      setMessage(
+        `Berhasil mengunggah ${selectedFiles.length} file dan mencatat kegiatan "${formData.title || "(tanpa judul)"}"`
+      )
+      setSelectedFiles([])
+      setUploading(false)
+    } catch (err: any) {
+      setMessage(`Gagal menyimpan kegiatan: ${err.message}`)
+      setUploading(false)
     }
-    
-    setMessage(`Successfully uploaded ${selectedFiles.length} file(s)`)
-    setSelectedFiles([])
-    setUploading(false)
   }
 
   const handleLogout = async () => {
@@ -105,30 +136,86 @@ export default function AdminUpload() {
             Logout
           </button>
         </div>
-        
+
         <div className="bg-gray-900 rounded-lg p-6 shadow-xl">
           <p className="text-gray-400 mb-4">
             Logged in as: <span className="text-white">{user?.email}</span>
           </p>
-          
+
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium mb-2">
-                Select Images to Upload
+                Detail Kegiatan
+              </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1">Judul</label>
+                  <input
+                    type="text"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    placeholder="Contoh: Sosialisasi Pajak Bertutur"
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1">Tanggal</label>
+                  <input
+                    type="date"
+                    value={formData.date}
+                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1">Unit</label>
+                  <input
+                    type="text"
+                    value={formData.unit}
+                    onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                    placeholder="Contoh: Admin Madu Sport"
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1">Kategori</label>
+                  <input
+                    type="text"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                  />
+                </div>
+              </div>
+              <div className="mt-4">
+                <label className="block text-xs text-gray-400 mb-1">Deskripsi</label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Cerita singkat tentang kegiatan ini…"
+                  rows={3}
+                  className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Pilih Foto Dokumentasi
               </label>
               <input
                 type="file"
                 multiple
                 accept="image/*"
                 onChange={handleFileSelect}
-                className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
               />
             </div>
-            
+
             {selectedFiles.length > 0 && (
               <div>
                 <p className="text-sm text-gray-400 mb-2">
-                  Selected files ({selectedFiles.length}):
+                  Berkas terpilih ({selectedFiles.length}):
                 </p>
                 <ul className="space-y-1">
                   {selectedFiles.map((file, index) => (
@@ -139,43 +226,43 @@ export default function AdminUpload() {
                 </ul>
               </div>
             )}
-            
+
             {uploading && (
               <div>
                 <div className="w-full bg-gray-800 rounded-full h-2">
-                  <div 
+                  <div
                     className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all"
                     style={{ width: `${uploadProgress}%` }}
                   ></div>
                 </div>
                 <p className="text-sm text-gray-400 mt-2">
-                  Uploading... {Math.round(uploadProgress)}%
+                  Mengunggah… {Math.round(uploadProgress)}%
                 </p>
               </div>
             )}
-            
+
             {message && (
               <div className={`p-3 rounded-lg text-sm ${
-                message.includes('Error') 
-                  ? 'bg-red-900/50 border border-red-700 text-red-300'
-                  : 'bg-green-900/50 border border-green-700 text-green-300'
+                message.includes("Gagal")
+                  ? "bg-red-900/50 border border-red-700 text-red-300"
+                  : "bg-green-900/50 border border-green-700 text-green-300"
               }`}>
                 {message}
               </div>
             )}
-            
+
             <button
               onClick={handleUpload}
               disabled={uploading || selectedFiles.length === 0}
               className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {uploading ? "Uploading..." : "Upload Images"}
+              {uploading ? "Mengunggah…" : "Unggah Foto & Simpan Kegiatan"}
             </button>
           </div>
-          
+
           <div className="mt-6 text-center">
             <a href="/" className="text-gray-400 hover:text-white text-sm transition">
-              ← Back to Home
+              ← Kembali ke Beranda
             </a>
           </div>
         </div>

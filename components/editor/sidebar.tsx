@@ -82,7 +82,7 @@ export function EditorSidebar({ selectedBucket, files, activities, settings, onR
       <h2>Editor Media</h2>
 
       <div style={{ marginTop: "1rem" }}>
-        <label>Upload ke {selectedBucket === "kegiatan-images" ? "Kegiatan" : "Editor"}</label>
+        <label>Upload ke {selectedBucket === "pelayanan-madu" ? "Kegiatan" : "Editor"}</label>
         <input
           type="file"
           multiple
@@ -99,7 +99,7 @@ export function EditorSidebar({ selectedBucket, files, activities, settings, onR
       )}
 
       <div style={{ marginTop: "2rem" }}>
-        <h3>File di {selectedBucket === "kegiatan-images" ? "Kegiatan" : "Editor"}</h3>
+        <h3>File di {selectedBucket === "pelayanan-madu" ? "Kegiatan" : "Editor"}</h3>
         {files.length === 0 ? (
           <p style={{ color: "#6b6f7d", fontSize: "0.85rem" }}>Belum ada file.</p>
         ) : (

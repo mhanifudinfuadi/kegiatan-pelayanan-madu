@@ -19,6 +19,7 @@ export interface CommentActivity {
   category: string
   description?: string
   image?: string
+  images?: string[]
 }
 
 interface KomentarPanelProps {
