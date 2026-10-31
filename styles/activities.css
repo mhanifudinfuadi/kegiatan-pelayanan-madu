@@ -20,3 +20,14 @@
 .cbody p.desc{color:var(--ink-soft);font-size:.92rem;line-height:1.6}
 .unit{margin-top:.9rem;font-size:.8rem;font-weight:500;color:var(--indigo)}
 .empty{grid-column:1/-1;padding:3rem 1rem;text-align:center;color:var(--ink-soft);background:#fff;border-radius:var(--radius)}
+/* strip foto dokumentasi tambahan di kartu kegiatan */
+.media-strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:.4rem;margin-top:.85rem;overflow-x:auto;scrollbar-width:none}
+.media-strip::-webkit-scrollbar{display:none}
+.media-strip__item{position:relative;display:block;height:56px;padding:0;border:1px solid var(--hairline);border-radius:.5rem;overflow:hidden;background:#fff;cursor:zoom-in}
+.media-strip__item img{width:100%;height:100%;object-fit:cover;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.media-strip__item:hover img{transform:scale(1.06)}
+
+@media (prefers-reduced-motion: reduce){
+  .media-strip__item img{transition:none}
+  .media-strip__item:hover img{transform:none}
+}

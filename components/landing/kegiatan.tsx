@@ -2,18 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { fetchCommentCounts } from "@/lib/comments"
+import { formatTanggal, type Activity } from "@/lib/activities"
 import { KomentarPanel } from "./komentar-panel"
-
-interface Activity {
-  id: string
-  title: string
-  date: string
-  unit: string
-  category: string
-  description?: string
-  image?: string
-  images?: string[]
-}
 
 interface KegiatanProps {
   activities: Activity[]
@@ -47,10 +37,7 @@ export function Kegiatan({ activities }: KegiatanProps) {
     ? activities
     : activities.filter(a => a.category === activeCategory)
 
-  const formatDate = (dateStr: string) => {
-    const d = new Date(dateStr)
-    return d.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })
-  }
+  const formatDate = formatTanggal
 
   return (
     <section className="acts" id="kegiatan">
@@ -100,6 +87,22 @@ export function Kegiatan({ activities }: KegiatanProps) {
                   </div>
                   <h3>{act.title}</h3>
                   {act.description && <p className="desc">{act.description}</p>}
+                  {/* Semua foto dokumentasi kegiatan ditampilkan di bawah foto utama */}
+                  {(act.images?.length || 0) > 1 && (
+                    <div className="media-strip" aria-label={`Foto lain dari ${act.title}`}>
+                      {act.images!.slice(1).map((url, i) => (
+                        <button
+                          type="button"
+                          key={url}
+                          className="media-strip__item"
+                          onClick={() => setOpenId(act.id)}
+                          aria-label={`Foto dokumentasi ${i + 2} dari ${act.title}`}
+                        >
+                          <img src={url} alt="" loading="lazy" />
+                        </button>
+                      ))}
+                    </div>
+                  )}
                   <div className="cfoot">
                     <div className="unit">{act.unit}</div>
                     <button

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { supabase } from "@/lib/supabase"
+import { explainError } from "@/lib/admin-api"
 
 interface EditorSidebarProps {
   selectedBucket: string
@@ -25,12 +26,12 @@ export function EditorSidebar({ selectedBucket, files, activities, settings, onR
     try {
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i]
-        const fileExt = file.name.split('.').pop()
-        const fileName = `ke-${Date.now()}-${i}.${fileExt}`
+        const fileExt = (file.name.split('.').pop() || 'jpg').toLowerCase()
+        const fileName = `ke-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`
 
         const { error } = await supabase.storage
           .from(selectedBucket)
-          .upload(fileName, file, { upsert: false })
+          .upload(fileName, file, { upsert: false, contentType: file.type })
 
         if (error) throw error
       }
@@ -38,7 +39,7 @@ export function EditorSidebar({ selectedBucket, files, activities, settings, onR
       setMessage(`Berhasil mengupload ${selectedFiles.length} file(s)`)
       onRefresh()
     } catch (err: any) {
-      setMessage(`Error: ${err.message}`)
+      setMessage(`Error: ${explainError(err.message)}`)
     } finally {
       setUploading(false)
     }
@@ -73,7 +74,7 @@ export function EditorSidebar({ selectedBucket, files, activities, settings, onR
       setMessage("Caption diperbarui")
       onRefresh()
     } catch (err: any) {
-      setMessage(`Error: ${err.message}`)
+      setMessage(`Error: ${explainError(err.message)}`)
     }
   }
 

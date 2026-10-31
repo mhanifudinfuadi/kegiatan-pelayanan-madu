@@ -1,14 +1,6 @@
 "use client"
 
-interface Activity {
-  id: string
-  title: string
-  date: string
-  unit: string
-  category: string
-  description?: string
-  image?: string
-}
+import type { Activity } from "@/lib/activities"
 
 interface LayananProps {
   activities: Activity[]

@@ -1,5 +1,5 @@
-import { CardScan } from "@/components/landing/card-scan"
+import { ScanPage } from "@/components/landing/scan-page"
 
-export default function ScanPage() {
-  return <CardScan activities={[]} />
+export default function ScanRoute() {
+  return <ScanPage />
 }

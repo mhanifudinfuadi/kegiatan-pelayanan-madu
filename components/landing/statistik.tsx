@@ -1,26 +1,18 @@
 "use client"
 
-interface Activity {
-  id: string
-  title: string
-  date: string
-  unit: string
-  category: string
-  description?: string
-  image?: string
-  images?: string[]
-}
+import { collectPhotos, type Activity } from "@/lib/activities"
 
 interface StatistikProps {
   activities: Activity[]
 }
 
 export function Statistik({ activities }: StatistikProps) {
-  const units = Array.from(new Set(activities.map(a => a.unit)))
-  const categories = Array.from(new Set(activities.map(a => a.category)))
+  const units = Array.from(new Set(activities.map(a => a.unit).filter(Boolean)))
+  const categories = Array.from(new Set(activities.map(a => a.category).filter(Boolean)))
+  const photos = collectPhotos(activities)
 
   const stats = [
-    { num: activities.length, lbl: "Kegiatan" },
+    { num: photos.length, lbl: "Foto Dokumentasi" },
     { num: units.length, lbl: "Unit Kerja" },
     { num: categories.length, lbl: "Kategori" },
   ]

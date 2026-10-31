@@ -1,17 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-
-interface Activity {
-  id: string
-  title: string
-  date: string
-  unit: string
-  category: string
-  description?: string
-  image?: string
-  images?: string[]
-}
+import { formatTanggal, type Activity } from "@/lib/activities"
 
 interface GaleriProps {
   activities: Activity[]
@@ -20,12 +10,12 @@ interface GaleriProps {
 export function Galeri({ activities }: GaleriProps) {
   const [visibleLayers, setVisibleLayers] = useState<number[]>([])
   const layerRefs = useRef<(HTMLDivElement | null)[]>([])
-  const prefersReduced = typeof window !== 'undefined' 
-    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches 
-    : false
+
+  // Maksimal 5 kegiatan; utamakan yang punya foto
+  const shown = activities.filter((a) => a.image || (a.images?.length || 0) > 0).slice(0, 5)
 
   useEffect(() => {
-    if (activities.length === 0) return
+    if (shown.length === 0) return
 
     const observers: IntersectionObserver[] = []
     layerRefs.current.forEach((el, idx) => {
@@ -34,14 +24,8 @@ export function Galeri({ activities }: GaleriProps) {
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              setVisibleLayers(prev => {
-                if (prev.includes(idx)) return prev
-                return [...prev, idx]
-              })
-              // Add 'on' class for title animation
-              setTimeout(() => {
-                el.classList.add("on")
-              }, 100)
+              setVisibleLayers(prev => (prev.includes(idx) ? prev : [...prev, idx]))
+              setTimeout(() => el.classList.add("on"), 100)
             }
           })
         },
@@ -52,16 +36,11 @@ export function Galeri({ activities }: GaleriProps) {
     })
 
     return () => observers.forEach(o => o.disconnect())
-  }, [activities.length])
+  }, [shown.length])
 
-  const formatDate = (dateStr: string) => {
-    const d = new Date(dateStr)
-    return d.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })
-  }
-
-  if (activities.length === 0) {
+  if (shown.length === 0) {
     return (
-      <section className="stack">
+      <section className="stack" id="galeri">
         <div className="layer light">
           <div className="inner">
             <p className="lempty">Belum ada kegiatan untuk galeri.</p>
@@ -73,8 +52,9 @@ export function Galeri({ activities }: GaleriProps) {
 
   return (
     <section className="stack" id="galeri">
-      {activities.slice(0, 5).map((act, idx) => {
+      {shown.map((act, idx) => {
         const isLight = idx % 2 === 0
+        const extra = (act.images || []).filter((url) => url !== act.image)
         return (
           <div
             key={act.id}
@@ -85,19 +65,26 @@ export function Galeri({ activities }: GaleriProps) {
               <div className="ghost-w">{act.category}</div>
               <div className="lmedia">
                 {act.image ? (
-                  <img src={act.image} alt={act.title} />
+                  <img src={act.image} alt={act.title} loading="lazy" />
                 ) : (
                   <div className="jp-mark">活</div>
                 )}
+                {extra.length > 0 && (
+                  <div className="galeri-thumbs">
+                    {extra.slice(0, 4).map((url) => (
+                      <img key={url} src={url} alt="" loading="lazy" />
+                    ))}
+                  </div>
+                )}
               </div>
               <div>
-                <div className="lnum">0{idx + 1} / 0{Math.min(activities.length, 5)}</div>
+                <div className="lnum">0{idx + 1} / 0{shown.length}</div>
                 <h2 className="ltitle">
                   <span>{act.title}</span>
                 </h2>
                 <p className="ldesc">{act.description || "Kegiatan yang dilaksanakan dengan penuh dedikasi."}</p>
                 <div className="lmeta">
-                  <span>{formatDate(act.date)}</span>
+                  <span>{formatTanggal(act.date)}</span>
                   <span>{act.unit}</span>
                 </div>
               </div>

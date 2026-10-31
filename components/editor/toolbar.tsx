@@ -9,9 +9,21 @@ interface EditorToolbarProps {
   selectedBucket: string
   onBucketChange: (bucket: string) => void
   onRefresh: () => void
+  /** Menautkan foto di bucket yang belum tercatat di tabel kegiatan */
+  onSyncPhotos?: () => void | Promise<void>
+  syncing?: boolean
+  onLogout?: () => void | Promise<void>
 }
 
-export function EditorToolbar({ user, selectedBucket, onBucketChange, onRefresh }: EditorToolbarProps) {
+export function EditorToolbar({
+  user,
+  selectedBucket,
+  onBucketChange,
+  onRefresh,
+  onSyncPhotos,
+  syncing = false,
+  onLogout,
+}: EditorToolbarProps) {
   const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -21,6 +33,10 @@ export function EditorToolbar({ user, selectedBucket, onBucketChange, onRefresh 
   ]
 
   const handleLogout = async () => {
+    if (onLogout) {
+      await onLogout()
+      return
+    }
     await signOut()
     router.push("/admin/login")
   }
@@ -50,6 +66,14 @@ export function EditorToolbar({ user, selectedBucket, onBucketChange, onRefresh 
             <option key={b.id} value={b.id}>{b.label}</option>
           ))}
         </select>
+        <button
+          className="ghost"
+          onClick={() => onSyncPhotos?.()}
+          disabled={syncing}
+          title="Tautkan foto di bucket yang belum tercatat pada kegiatan"
+        >
+          {syncing ? "Menyinkronkan…" : "Sinkron foto"}
+        </button>
         <button className="ghost" onClick={onRefresh}> refresh</button>
         <button className="ghost" onClick={() => setMenuOpen(!menuOpen)}>⋮</button>
         {menuOpen && (

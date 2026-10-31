@@ -11,7 +11,7 @@
 .sc-stage:after{background:radial-gradient(ellipse at center,transparent 30%,rgba(7,4,8,.2) 100%)}
 .sc-empty{position:absolute;inset:0;z-index:4;display:grid;place-items:center;color:rgba(255,255,255,.6);font-size:14px;margin:0}
 .sc-empty[hidden]{display:none}
-.sc-track{position:absolute;left:0;top:50%;height:clamp(300px,42vw,390px);transform:translateY(-50%);display:flex;gap:34px;will-change:transform}
+.sc-track{position:absolute;left:0;top:0;bottom:0;margin:auto 0;height:clamp(300px,42vw,390px);transform:translateX(0);display:flex;gap:34px;will-change:transform}
 .sc-card{position:relative;flex:0 0 clamp(220px,24vw,300px);height:100%;overflow:hidden;border:1px solid rgba(242,155,189,.22);border-radius:24px;background:#171019;box-shadow:0 18px 50px #0006;isolation:isolate}
 .sc-chip{position:absolute;inset:0;z-index:0;background:repeating-linear-gradient(0deg,transparent 0 12px,rgba(242,155,189,.055) 13px 14px),repeating-linear-gradient(90deg,transparent 0 17px,rgba(242,155,189,.07) 18px 19px),linear-gradient(135deg,#261622,#100b12 75%)}
 .sc-chip:before{content:"桜光夢風雲龍水火空心和道未来電脳夜花月雪京炎鋼刃";position:absolute;inset:12px;word-break:break-all;line-height:1.75;letter-spacing:.3em;color:#f29bbd30;font-size:16px}

@@ -1,9 +1,8 @@
 "use client"
 
-"use client"
-
 import { useState, useEffect } from "react"
 import { getCurrentUser, supabase } from "@/lib/supabase"
+import { explainError, repairPhotos } from "@/lib/admin-api"
 import { useRouter } from "next/navigation"
 
 export default function AdminUpload() {
@@ -56,18 +55,19 @@ export default function AdminUpload() {
 
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i]
-        const fileExt = file.name.split(".").pop()
-        const fileName = `ke-${Date.now()}-${i}.${fileExt}`
+        const fileExt = (file.name.split(".").pop() || "jpg").toLowerCase()
+        const fileName = `ke-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`
 
         const { data, error } = await supabase.storage
           .from("pelayanan-madu")
           .upload(fileName, file, {
             cacheControl: "3600",
             upsert: false,
+            contentType: file.type,
           })
 
         if (error) {
-          setMessage(`Gagal mengunggah ${file.name}: ${error.message}`)
+          setMessage(`Gagal mengunggah ${file.name}: ${explainError(error.message)}`)
           setUploading(false)
           return
         }
@@ -95,15 +95,35 @@ export default function AdminUpload() {
         },
       ])
 
-      if (dbError) throw dbError
+      if (dbError) {
+        // Foto sudah masuk bucket tetapi gagal dicatat -> coba tautkan lewat API server
+        const { data: sessionData } = await supabase.auth.getSession()
+        const repair = await repairPhotos(sessionData.session?.access_token)
+        throw new Error(
+          repair.ok
+            ? `Foto sudah diunggah dan ditautkan ke dokumentasi kegiatan (${explainError(dbError.message)}).`
+            : `${explainError(dbError.message)} ${repair.message}`
+        )
+      }
 
       setMessage(
-        `Berhasil mengunggah ${selectedFiles.length} file dan mencatat kegiatan "${formData.title || "(tanpa judul)"}"`
+        `Berhasil mengunggah ${selectedFiles.length} foto dan mencatat kegiatan "${formData.title || "(tanpa judul)"}". Foto akan muncul di section Kegiatan, Dokumentasi, dan Pindai.`
       )
       setSelectedFiles([])
       setUploading(false)
     } catch (err: any) {
       setMessage(`Gagal menyimpan kegiatan: ${err.message}`)
+      setUploading(false)
+    }
+  }
+
+  const handleSync = async () => {
+    setUploading(true)
+    try {
+      const { data: sessionData } = await supabase.auth.getSession()
+      const result = await repairPhotos(sessionData.session?.access_token)
+      setMessage(result.message)
+    } finally {
       setUploading(false)
     }
   }
@@ -255,12 +275,26 @@ export default function AdminUpload() {
               onClick={handleUpload}
               disabled={uploading || selectedFiles.length === 0}
               className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ cursor: uploading || selectedFiles.length === 0 ? "not-allowed" : "pointer" }}
             >
               {uploading ? "Mengunggah…" : "Unggah Foto & Simpan Kegiatan"}
             </button>
           </div>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6 flex flex-col items-center gap-3 text-center">
+            <button
+              onClick={handleSync}
+              disabled={uploading}
+              className="px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-sm transition disabled:opacity-50"
+            >
+              Sinkronkan foto bucket ke kegiatan
+            </button>
+            <p className="text-xs text-gray-500 max-w-md">
+              Gunakan bila foto sudah ada di bucket tetapi belum muncul di web.
+            </p>
+            <a href="/editor" className="text-gray-400 hover:text-white text-sm transition">
+              Buka Editor
+            </a>
             <a href="/" className="text-gray-400 hover:text-white text-sm transition">
               ← Kembali ke Beranda
             </a>

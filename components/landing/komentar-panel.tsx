@@ -68,10 +68,13 @@ export function KomentarPanel({ activity, onClose, onCountChange }: KomentarPane
       setComments(rows)
       onCountChange?.(activity.id, rows.length)
     } catch (err: any) {
+      const code = err?.code || ""
       setError(
-        err?.code === "42P01"
-          ? "Tabel komentar belum dibuat. Jalankan migrasi 002_create_comments.sql."
-          : "Komentar gagal dimuat."
+        code === "42P01" || code === "PGRST205"
+          ? "Tabel komentar belum dibuat. Jalankan migrasi 002/004 di Supabase SQL Editor."
+          : code === "42501"
+            ? "Akses tabel komentar ditolak. Jalankan migrasi 004 di Supabase SQL Editor."
+            : "Komentar gagal dimuat."
       )
     } finally {
       setLoading(false)

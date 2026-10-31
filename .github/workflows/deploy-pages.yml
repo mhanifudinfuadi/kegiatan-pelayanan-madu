@@ -33,10 +33,12 @@ jobs:
       - run: pnpm install --no-frozen-lockfile --config.confirmModulesPurge=false
 
       # Halaman Pages adalah salinan statis.
-      # middleware.ts dan route dinamis tidak didukung, jadi dilewati saat export.
+      # middleware.ts dan route API/dinamis tidak didukung, jadi dilewati saat export.
+      # Sinkron foto tetap bisa lewat /editor (tombol) atau supabase/fix-photos.sql.
       - name: Build statis untuk Pages
         run: |
           rm -f middleware.ts
+          rm -rf app/api
           touch public/.nojekyll
           GITHUB_PAGES=true pnpm exec next build
         env:

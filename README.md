@@ -83,6 +83,25 @@ Tables:
 
 Lihat `supabase/migrations/001_create_editor_tables.sql` untuk skema lengkap.
 
+### Wajib: migrasi 004
+
+`supabase/migrations/004_fix_activity_photos.sql` **harus dijalankan** sekali di Supabase SQL Editor.
+Tanpa migrasi ini upload foto bisa berhasil ke bucket tetapi tidak tersimpan ke tabel:
+
+- `GRANT` untuk role `anon`/`authenticated` (penyebab error 42501 `permission denied for table activities`)
+- kolom `activities.images` (semua foto dokumentasi satu kegiatan)
+- tabel `site_settings`, `comments`, `editor_users`
+- policy RLS tabel + policy `storage.objects` untuk bucket `pelayanan-madu`
+
+### Alur foto dokumentasi
+
+1. Unggah foto di `/editor` (atau `/admin/upload`) → tersimpan di bucket `pelayanan-madu`
+2. Simpan kegiatan → URL foto masuk ke `activities.images`
+3. Bila foto sudah ada di bucket tetapi belum tercatat (upload dulu gagal), klik **Sinkron foto**
+   di toolbar editor. Endpoint `POST /api/admin/sync-photos` memakai `SUPABASE_SERVICE_ROLE_KEY`
+   (butuh login; tidak tersedia pada build statis GitHub Pages).
+4. Section Kegiatan, Dokumentasi, Pindai (`/` dan `/scan`), serta Galeri membaca sumber foto yang sama.
+
 ## Menjalankan
 
 1. Salin `.env.example` ke `.env` dan isi kredensial Supabase
