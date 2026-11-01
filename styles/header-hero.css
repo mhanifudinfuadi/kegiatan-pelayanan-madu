@@ -19,3 +19,12 @@
 .top{z-index:5}
 .petal{position:absolute;top:-10%;background:linear-gradient(135deg,#ffe6ee,#f4a1b8);border-radius:0 80% 0 80%;opacity:.9;animation-name:fall;animation-timing-function:linear;animation-iteration-count:infinite}
 @keyframes fall{0%{transform:translate3d(0,-10vh,0) rotate(0)}50%{transform:translate3d(36px,55vh,0) rotate(180deg)}100%{transform:translate3d(-24px,115vh,0) rotate(360deg)}}
+
+/* --- Navbar: cahaya (glow) pada tiap logo saat diarahkan --- */
+.top__stack{display:flex;align-items:center;gap:1rem}
+.top__clock{color:rgba(255,255,255,.75);font-size:.85rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.top__nav-item{position:relative;display:inline-flex;align-items:center;justify-content:center}
+.top__nav-item svg{transition:filter .25s ease,transform .25s ease,color .25s ease;will-change:filter,transform;color:rgba(255,255,255,.85)}
+.top__nav-item:hover svg{filter:drop-shadow(0 0 10px rgba(61,139,255,.95));transform:scale(1.18);color:#fff}
+.top__nav-item:hover::before{content:"";position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle at center,rgba(61,139,255,.4) 0%,rgba(61,139,255,0) 70%);opacity:0;transition:opacity .25s ease;pointer-events:none;z-index:-1}
+.top__nav-item:hover::before{opacity:1}
