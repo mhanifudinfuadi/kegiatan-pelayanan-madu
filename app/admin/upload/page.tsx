@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { getCurrentUser, supabase } from "@/lib/supabase"
 import { explainError, repairPhotos } from "@/lib/admin-api"
 import { useRouter } from "next/navigation"
@@ -292,12 +293,12 @@ export default function AdminUpload() {
             <p className="text-xs text-gray-500 max-w-md">
               Gunakan bila foto sudah ada di bucket tetapi belum muncul di web.
             </p>
-            <a href="/editor" className="text-gray-400 hover:text-white text-sm transition">
+            <Link href="/editor" className="text-gray-400 hover:text-white text-sm transition">
               Buka Editor
-            </a>
-            <a href="/" className="text-gray-400 hover:text-white text-sm transition">
+            </Link>
+            <Link href="/" className="text-gray-400 hover:text-white text-sm transition">
               ← Kembali ke Beranda
-            </a>
+            </Link>
           </div>
         </div>
       </div>

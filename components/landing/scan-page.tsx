@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { fetchActivitiesResult, type Activity } from "@/lib/activities"
 import { CardScan } from "./card-scan"
 
@@ -28,9 +29,9 @@ export function ScanPage() {
   return (
     <main>
       <div style={{ padding: "1.5rem 5vw 0", display: "flex", justifyContent: "space-between", gap: "1rem" }}>
-        <a href="/" style={{ fontSize: ".85rem", color: "var(--ink-soft)" }}>
+        <Link href="/" style={{ fontSize: ".85rem", color: "var(--ink-soft)" }}>
           ← Kembali ke beranda
-        </a>
+        </Link>
         <span style={{ fontSize: ".8rem", color: "var(--ink-soft)" }}>
           {loading ? "Memuat…" : `${activities.length} kegiatan`}
         </span>

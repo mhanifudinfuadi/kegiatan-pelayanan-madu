@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { signIn, signOut, getCurrentUser } from "@/lib/supabase"
+import Link from "next/link"
+import { signIn, signOut } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
 
 export default function AdminLogin() {
@@ -89,9 +90,9 @@ export default function AdminLogin() {
         </form>
         
         <div className="mt-6 text-center">
-          <a href="/" className="text-[#6b6f7d] hover:text-[#1b2a4a] text-sm transition">
+          <Link href="/" className="text-[#6b6f7d] hover:text-[#1b2a4a] text-sm transition">
             ← Back to Home
-          </a>
+          </Link>
         </div>
       </div>
     </div>
