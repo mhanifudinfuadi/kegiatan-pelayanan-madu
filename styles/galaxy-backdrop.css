@@ -52,3 +52,6 @@
   .fx__nebula{animation:none}
   .fx__flower video{opacity:1}
 }
+
+/* Varian latar global: mengisi viewport di belakang konten, tanpa memakan ruang layout */
+.fx.fx--cover{position:fixed;inset:0;z-index:-1;height:auto;min-height:0;margin:0;border-radius:0;pointer-events:none}

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono, Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google'
 
 import { asset } from '@/lib/asset'
 
@@ -15,13 +15,17 @@ import '../styles/galaxy-backdrop.css'
 import '../styles/scan.css'
 import '../styles/footer-reveal.css'
 import '../styles/footer-docs.css'
+import '../styles/madu-theme.css'
 
 const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const _geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
+// Tipografi tema Galeri Madu: heading serif elegan + body sans futuristik
+const _playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair", display: "swap" });
+const _jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", display: "swap" });
 
 export const metadata: Metadata = {
-  title: 'Dokuemntasi Kegiatan Pelayanan — Thou art my rarest exception.',
-  description: 'Nuansa Jepang yang tenang dan etereal: biru malam Gunung Fuji dan Danau Kawaguchiko, sakura, kertas washi, dan kanji sebagai aksen.',
+  title: 'Galeri Madu — Dokumentasi Kegiatan Pelayanan · KPP Madya Dua Jakarta Barat',
+  description: 'Galeri foto kegiatan pelayanan KPP Madya Dua Jakarta Barat — Direktorat Jenderal Pajak, Kementerian Keuangan. Bergaya futuristik-elegan dengan nuansa Jepang.',
   generator: 'v0.app',
   icons: {
     icon: [{ url: asset('/icon.svg'), type: 'image/svg+xml' }],
@@ -35,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className="font-sans antialiased">
+      <body className={`font-sans antialiased ${_playfair.variable} ${_jakarta.variable} ${_geistMono.variable}`}>
         {children}
       </body>
     </html>

@@ -118,13 +118,12 @@ export function Footer() {
           <div>
             <h4 style={{ color: "#E9B6C9", letterSpacing: ".15em", fontSize: "1rem" }}>EXPLORE</h4>
             <nav style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".1rem 1rem", marginTop: "1rem", fontSize: ".95rem" }}>
-              <a href="#beranda" style={{ color: "#F3EBDD", gridColumn: "1 / -1" }}>Beranda</a>
-              <a href="#kegiatan" style={{ color: "#F3EBDD" }}>Kegiatan</a>
-              <a href="#statistik" style={{ color: "#F3EBDD" }}>Statistik</a>
+              <a href="#galeri" style={{ color: "#F3EBDD", gridColumn: "1 / -1" }} data-testid="footer-galeri">Galeri</a>
               <p style={{ gridColumn: "1 / -1", textAlign: "center", color: "#E9B6C9", margin: "0", whiteSpace: "pre-line", lineHeight: 1.2 }}>somehow you{"\n"}feels like home</p>
-              <a href="#tentang" style={{ color: "#F3EBDD" }}>Tentang</a>
-              <a href="#galeri" style={{ color: "#F3EBDD" }}>Galeri</a>
-              <a href="#scan" style={{ color: "#F3EBDD", gridColumn: "1 / -1" }}>Scan</a>
+              <a href="#tentang" style={{ color: "#F3EBDD" }} data-testid="footer-tentang">Tentang</a>
+              <a href="#scan" style={{ color: "#F3EBDD" }} data-testid="footer-scan">Pindai</a>
+              <a href="#dokumentasi" style={{ color: "#F3EBDD" }}>Masuk Pegawai</a>
+              <a href="#dokumentasi" style={{ color: "#F3EBDD" }}>Daftar Pegawai</a>
             </nav>
           </div>
         </div>
@@ -133,7 +132,7 @@ export function Footer() {
 
         <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", color: "#8F8BA8" }}>
           <p>The world remains. I am simply no longer quite the same.</p>
-          <p>© {new Date().getFullYear()}Tanah Abang, Made with quiet devotion.</p>
+          <p>© {new Date().getFullYear()} Galeri Madu · KPP Madya Dua Jakarta Barat · Direktorat Jenderal Pajak · Kementerian Keuangan</p>
         </div>
       </div>
     </footer>

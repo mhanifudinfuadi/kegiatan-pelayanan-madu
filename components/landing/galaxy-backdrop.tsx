@@ -5,9 +5,10 @@ import { useEffect, useRef } from "react"
 import { asset } from "@/lib/asset"
 
 /**
- * Latar "Glass Flower Galaxy" — dipasang di ujung section galeri, tepat sebelum
- * section Pindaian Kegiatan. Susunan layer (bawah ke atas):
- * base → nebula → bintang → halo → bunga → vignette.
+ * Latar "Glass Flower Galaxy" yang fixed menutupi viewport (di belakang konten).
+ * Karena position:fixed menempel di body, elemen ini HARUS dirender paling awal
+ * di <main>, bukan di antara section — kalau tidak, ia menutupi header.
+ * Susunan layer (bawah ke atas): base → nebula → bintang → halo → bunga → vignette.
  * Nilai warna & posisi diambil dari tokens.css (design-tokens.json).
  */
 export function GalaxyBackdrop() {
@@ -121,7 +122,7 @@ export function GalaxyBackdrop() {
   }, [])
 
   return (
-    <div className="fx" aria-hidden="true">
+    <div className="fx fx--cover" aria-hidden="true">
       <div className="fx__base" />
       <div className="fx__nebula" />
       <canvas className="fx__stars" ref={canvasRef} />
