@@ -1,15 +1,18 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import * as THREE from "three"
 
 /**
  * Section #tentang — disesuaikan dengan design-sakura.md:
- * latar hitam + video bunga (flower.mp4) di bagian bawah (90vh).
- * Tanpa teks. Hormati prefers-reduced-motion.
+ * latar hitam dengan efek bintang bergerak (seperti footer), konten difokuskan
+ * ke tengah laman. Tanpa teks di luar konten. Hormati prefers-reduced-motion.
  */
 export function GdFloral() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const starRef = useRef<HTMLCanvasElement>(null)
 
+  // --- Video bunga (background, bawah) ---
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
@@ -37,6 +40,73 @@ export function GdFloral() {
     return () => observer.disconnect()
   }, [])
 
+  // --- Efek bintang bergerak di latar hitam (mirip footer) ---
+  useEffect(() => {
+    const canvas = starRef.current
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (prefersReduced || !canvas) return
+
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+
+    let width = 0
+    let height = 0
+    let frame = 0
+
+    const stars: { x: number; y: number; z: number; p: number }[] = []
+    const starCount = 420
+
+    const resize = () => {
+      width = canvas.parentElement?.clientWidth || window.innerWidth
+      height = canvas.parentElement?.clientHeight || window.innerHeight
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = width * dpr
+      canvas.height = height * dpr
+      canvas.style.width = width + "px"
+      canvas.style.height = height + "px"
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+      stars.length = 0
+      for (let i = 0; i < starCount; i++) {
+        stars.push({
+          x: (Math.random() - 0.5) * width,
+          y: (Math.random() - 0.5) * height,
+          z: Math.random() * 1000,
+          p: Math.random(),
+        })
+      }
+    }
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height)
+      ctx.fillStyle = "#FFFFFF"
+      for (const s of stars) {
+        s.z -= 1.2
+        if (s.z <= 0) s.z = 1000
+        const k = 1000 / s.z
+        const px = s.x * k + width / 2
+        const py = s.y * k + height / 2
+        const r = (1 - s.z / 1000) * 1.5
+        const a = 0.5 + 0.5 * Math.sin(Date.now() / 1000 + s.p)
+        ctx.globalAlpha = a
+        ctx.beginPath()
+        ctx.arc(px, py, r, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      ctx.globalAlpha = 1
+      frame = requestAnimationFrame(draw)
+    }
+
+    resize()
+    draw()
+    window.addEventListener("resize", resize)
+
+    return () => {
+      window.removeEventListener("resize", resize)
+      cancelAnimationFrame(frame)
+    }
+  }, [])
+
   return (
     <section
       className="gd-floral"
@@ -44,21 +114,20 @@ export function GdFloral() {
       data-testid="floral-section"
       style={{
         position: "relative",
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: "#000000",
         overflow: "hidden",
-        padding: "clamp(4rem, 10vw, 8rem) clamp(1.5rem, 5vw, 4rem)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        padding: "clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem)",
       }}
     >
-      <div
-        style={{
-          position: "relative",
-          zIndex: 1,
-          maxWidth: "42rem",
-          margin: "0 auto 3rem",
-          textAlign: "center",
-        }}
-      >
+      <canvas ref={starRef} className="floral-stars" aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
+
+      <div style={{ position: "relative", zIndex: 1, maxWidth: "42rem" }}>
         <p
           style={{
             letterSpacing: ".2em",
