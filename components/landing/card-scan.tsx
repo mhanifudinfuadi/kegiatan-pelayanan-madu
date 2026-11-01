@@ -34,10 +34,45 @@ export function CardScan({ activities }: CardScanProps) {
     return () => mq.removeEventListener?.("change", onChange)
   }, [])
 
+  /**
+   * Setelah melewati garis pemindai, foto memudar lalu hanya menyisakan aksara.
+   * Progres 0..1 dihitung dari jarak kartu terhadap garis (tengah stage):
+   *   0  -> kartu baru menyentuh garis
+   *   1  -> kartu sudah melewati satu lebar kartu penuh
+   */
+  const updateDissolve = (track: HTMLElement) => {
+    const stage = track.parentElement
+    if (!stage) return
+    const beamX = stage.getBoundingClientRect().left + stage.clientWidth / 2
+    const cards = track.children
+
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i] as HTMLElement
+      const rect = card.getBoundingClientRect()
+      const lewat = (beamX - rect.right) / Math.max(rect.width, 1)
+      const progress = Math.min(Math.max(lewat, 0), 1)
+      // hanya tulis bila berubah, agar tidak memicu layout berulang
+      const prev = card.dataset.dissolve
+      const next = progress.toFixed(3)
+      if (prev !== next) {
+        card.dataset.dissolve = next
+        card.style.setProperty("--scan", next)
+        card.classList.toggle("is-dissolving", progress > 0)
+        card.classList.toggle("is-gone", progress >= 1)
+      }
+    }
+  }
+
   useEffect(() => {
-    if (reduced || !trackRef.current || allScannedImages.length === 0) return
+    if (!trackRef.current || allScannedImages.length === 0) return
 
     const track = trackRef.current
+    // reduced-motion: track diam, namun efek "hilang" tetap ditata statis
+    if (reduced) {
+      updateDissolve(track)
+      return
+    }
+
     const speed = 55 // px per detik
     let lastTime = performance.now()
 
@@ -55,6 +90,7 @@ export function CardScan({ activities }: CardScanProps) {
       }
 
       track.style.transform = `translateX(${positionRef.current}px)`
+      updateDissolve(track)
       rafRef.current = requestAnimationFrame(animate)
     }
 
@@ -68,7 +104,10 @@ export function CardScan({ activities }: CardScanProps) {
   // Reset posisi saat daftar foto berubah
   useEffect(() => {
     positionRef.current = 0
-    if (trackRef.current) trackRef.current.style.transform = "translateX(0px)"
+    const track = trackRef.current
+    if (!track) return
+    track.style.transform = "translateX(0px)"
+    updateDissolve(track)
   }, [allScannedImages.length])
 
   const handleMouseEnter = () => {

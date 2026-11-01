@@ -19,18 +19,36 @@ export const JENIS_KEGIATAN = [
 export type JenisKegiatan = (typeof JENIS_KEGIATAN)[number]
 
 /**
- * Petakan kategori bebas dari database ke 11 jenis di atas.
- * Kategori lama (mis. "Dokumentasi", "Umum") menjadi "Lain-lain".
+ * Kategori bawaan bila kegiatan tidak memilih jenis apa pun.
+ * Seluruh foto dokumentasi yang diunggah dari dashboard Madu Sport
+ * berkategori "Pajak Bertutur", jadi nilai ini dipakai sebagai default.
+ * Jangan mengganti kategori yang memang sudah dipilih di dashboard.
  */
-export function normalizeJenis(kategori?: string | null): JenisKegiatan {
-  const raw = (kategori || "").trim().toLowerCase()
-  if (!raw) return "Lain-lain"
-  const exact = JENIS_KEGIATAN.find((j) => j.toLowerCase() === raw)
-  if (exact) return exact
-  const partial = JENIS_KEGIATAN.find(
-    (j) => raw.includes(j.toLowerCase()) || j.toLowerCase().includes(raw)
-  )
-  return partial || "Lain-lain"
+export const KATEGORI_BAWAAN: JenisKegiatan = "Pajak Bertutur"
+
+/**
+ * Label kategori untuk ditampilkan:
+ * - kategori apa pun yang dipilih di dashboard Madu Sport dipakai apa adanya
+ * - kategori kosong / hanya penanda sistem ("Dokumentasi", "Umum", "Lainnya")
+ *   ditampilkan sebagai kategori bawaan
+ */
+export function labelJenis(kategori?: string | null): string {
+  const raw = (kategori || "").trim()
+  if (!raw) return KATEGORI_BAWAAN
+  if (/^(dokumentasi|umum|lainnya|lain-lain)$/i.test(raw)) return KATEGORI_BAWAAN
+  return raw
+}
+
+/**
+ * Petakan kategori dari database ke daftar jenis kegiatan.
+ * Kategori di luar daftar tetap dipertahankan (tidak dipaksa "Lain-lain"),
+ * supaya pilihan kategori dari dashboard Madu Sport tidak hilang.
+ */
+export function normalizeJenis(kategori?: string | null): string {
+  const raw = (kategori || "").trim()
+  if (!raw) return KATEGORI_BAWAAN
+  if (/^(dokumentasi|umum|lainnya|lain-lain)$/i.test(raw)) return KATEGORI_BAWAAN
+  return raw
 }
 
 export const INSTITUSI = "KPP Madya Dua Jakarta Barat"

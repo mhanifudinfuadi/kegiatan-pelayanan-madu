@@ -1,4 +1,5 @@
 import { isSupabaseConfigured, supabase } from "./supabase"
+import { labelJenis } from "./kegiatan-types"
 
 /** Satu kegiatan pelayanan. `images` berisi semua foto dokumentasi. */
 export interface Activity {
@@ -72,7 +73,8 @@ export function normalizeActivity(act: RawActivity, index = 0): Activity {
     title: act.title || "Kegiatan Pelayanan",
     date: act.date || "",
     unit: act.unit || "",
-    category: act.category || "Umum",
+    // kategori mengikuti pilihan dashboard Madu Sport; kosong -> kategori bawaan
+    category: labelJenis(act.category),
     description: act.description || "",
     image: photos[0] || "",
     images: photos,

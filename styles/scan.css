@@ -36,3 +36,51 @@
 .sc-status{color:#ffd0e0;min-width:90px;font-size:11px;text-align:center}
 @media(max-width:600px){.sc-track{gap:24px}.sc-card{border-radius:20px}.sc-beam{height:300px}.sc-info{left:17px;bottom:18px}.sc-info h2{font-size:20px}.sc-glyphs{padding:8px}}
 @media(prefers-reduced-motion:reduce){.sc-petal{display:none}.sc-btn{transition:none}}
+
+/* ---- Kartu menghilang setelah melewati garis pemindai ---------------------
+   --scan: 0 (baru menyentuh garis) .. 1 (sudah lewat satu kartu penuh).
+   Diatur oleh JS di card-scan.tsx; animasi hanya memakai properti turunannya. */
+
+.sc-photo {
+  transition: opacity 0.9s ease, filter 0.9s ease;
+  /* tepi kanan memudar lebih dulu saat kartu melewati sinar */
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - var(--scan, 0) * 55%), transparent calc(100% - var(--scan, 0) * 15%));
+  mask-image: linear-gradient(90deg, #000 calc(100% - var(--scan, 0) * 55%), transparent calc(100% - var(--scan, 0) * 15%));
+}
+
+.sc-card.is-dissolving .sc-photo {
+  opacity: calc(0.88 - var(--scan, 0) * 0.88);
+  filter: saturate(calc(0.88 - var(--scan, 0) * 0.6)) contrast(1.04) blur(calc(var(--scan, 0) * 3px));
+}
+
+/* aksara Jepang menonjol saat foto hilang */
+.sc-glyphs {
+  transition: opacity 0.8s ease;
+}
+
+.sc-card.is-dissolving .sc-glyphs {
+  opacity: calc(0.55 + var(--scan, 0) * 0.45);
+}
+
+.sc-card.is-dissolving .sc-glyphs span {
+  color: rgba(255, 236, 243, calc(0.18 + var(--scan, 0) * 0.5));
+  text-shadow: 0 0 calc(var(--scan, 0) * 6px) rgba(255, 208, 224, 0.4);
+}
+
+/* label teks di bawah tetap terbaca di atas aksara */
+.sc-info {
+  transition: opacity 0.6s ease;
+}
+
+.sc-card.is-gone .sc-info {
+  opacity: 0.92;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-photo,
+  .sc-glyphs,
+  .sc-glyphs span,
+  .sc-info {
+    transition: none;
+  }
+}

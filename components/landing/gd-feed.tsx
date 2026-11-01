@@ -48,11 +48,21 @@ export function GdFeed({ activities, onStatsChange }: GdFeedProps) {
 
   const allPhotos = useMemo(() => collectPhotos(activities), [activities])
 
-  // Foto diberi jenis kegiatan hasil normalisasi (11 daftar wajib)
+  // Label kategori mengikuti pilihan dashboard Madu Sport apa adanya
   const photos: PhotoItem[] = useMemo(
     () => allPhotos.map((p) => ({ ...p, category: normalizeJenis(p.category) })),
     [allPhotos]
   )
+
+  // Urutan chip: 11 jenis wajib dulu, lalu kategori kustom yang dipilih di dashboard
+  const jenisAktif = useMemo(() => {
+    const dipakai = Array.from(new Set(photos.map((p) => p.category)))
+    const wajib = JENIS_KEGIATAN.filter((j) => dipakai.includes(j))
+    const kustom = dipakai
+      .filter((j) => !(JENIS_KEGIATAN as readonly string[]).includes(j))
+      .sort((a, b) => a.localeCompare(b, "id"))
+    return [...wajib, ...kustom]
+  }, [photos])
 
   useEffect(() => {
     setLikes(readLikes())
@@ -63,7 +73,7 @@ export function GdFeed({ activities, onStatsChange }: GdFeedProps) {
     }
     fetchCommentCounts()
       .then(setCounts)
-      .catch(() => {})
+      .catch(() => { })
   }, [])
 
   // Sinkronkan angka untuk statistik section berikutnya
@@ -124,7 +134,7 @@ export function GdFeed({ activities, onStatsChange }: GdFeedProps) {
     setOpenKey(visible[(openIndex + 1) % visible.length].key)
   }, [openIndex, visible])
 
-  const jenisAktif = JENIS_KEGIATAN.filter((j) => photos.some((p) => p.category === j))
+
 
   return (
     <section className="gd-feed" id="dokumentasi" data-testid="feed-section">
