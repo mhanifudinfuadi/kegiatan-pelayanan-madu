@@ -14,7 +14,6 @@ interface GdFeedProps {
 }
 
 const LIKE_KEY = "galeri-madu-reaksi"
-const NAME_KEY = "komentar-nama"
 
 /** Baca daftar foto yang sudah diberi hati di perangkat ini. */
 function readLikes(): Record<string, boolean> {
@@ -44,7 +43,6 @@ export function GdFeed({ activities, onStatsChange }: GdFeedProps) {
   const [counts, setCounts] = useState<Record<string, number>>({})
   const [openKey, setOpenKey] = useState<string | null>(null)
   const [toast, setToast] = useState("")
-  const [canInteract, setCanInteract] = useState(false)
 
   const allPhotos = useMemo(() => collectPhotos(activities), [activities])
 
@@ -66,11 +64,6 @@ export function GdFeed({ activities, onStatsChange }: GdFeedProps) {
 
   useEffect(() => {
     setLikes(readLikes())
-    try {
-      setCanInteract(Boolean(localStorage.getItem(NAME_KEY)))
-    } catch {
-      /* abaikan */
-    }
     fetchCommentCounts()
       .then(setCounts)
       .catch(() => { })
@@ -117,12 +110,6 @@ export function GdFeed({ activities, onStatsChange }: GdFeedProps) {
       return next
     })
   }, [])
-
-  const needLogin = useCallback(() => {
-    setToast("Masuk sebagai pegawai untuk memberi reaksi dan komentar — isi nama Anda di kolom komentar.")
-  }, [])
-
-  const markInteracted = useCallback(() => setCanInteract(true), [])
 
   const goPrev = useCallback(() => {
     if (visible.length === 0 || openIndex < 0) return
@@ -189,10 +176,8 @@ export function GdFeed({ activities, onStatsChange }: GdFeedProps) {
                 liked={Boolean(likes[photo.key])}
                 likeCount={likeCountOf(photo.key)}
                 commentCount={counts[photo.id] || 0}
-                canInteract={canInteract}
                 onOpen={() => setOpenKey(photo.key)}
                 onLike={() => toggleLike(photo.key)}
-                onNeedLogin={needLogin}
               />
             ))}
           </div>
@@ -206,15 +191,12 @@ export function GdFeed({ activities, onStatsChange }: GdFeedProps) {
           total={visible.length}
           liked={Boolean(likes[openPhoto.key])}
           likeCount={likeCountOf(openPhoto.key)}
-          canInteract={canInteract}
           onClose={() => setOpenKey(null)}
           onPrev={goPrev}
           onNext={goNext}
           onLike={() => toggleLike(openPhoto.key)}
-          onNeedLogin={needLogin}
           onCountChange={(photoKey, count) => {
             setCounts((prev) => ({ ...prev, [photoKey]: count }))
-            markInteracted()
           }}
         />
       )}

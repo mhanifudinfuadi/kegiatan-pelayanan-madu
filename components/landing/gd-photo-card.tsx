@@ -9,10 +9,8 @@ interface GdPhotoCardProps {
   likeCount: number
   commentCount: number
   index: number
-  canInteract: boolean
   onOpen: () => void
   onLike: () => void
-  onNeedLogin: () => void
 }
 
 /**
@@ -26,19 +24,13 @@ export function GdPhotoCard({
   likeCount,
   commentCount,
   index,
-  canInteract,
   onOpen,
   onLike,
-  onNeedLogin,
 }: GdPhotoCardProps) {
   const tapTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [burstKey, setBurstKey] = useState(0)
 
   const doLike = () => {
-    if (!canInteract) {
-      onNeedLogin()
-      return
-    }
     setBurstKey((k) => k + 1)
     onLike()
   }

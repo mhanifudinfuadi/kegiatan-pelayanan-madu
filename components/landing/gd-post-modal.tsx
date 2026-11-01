@@ -11,12 +11,10 @@ interface GdPostModalProps {
   total: number
   liked: boolean
   likeCount: number
-  canInteract: boolean
   onClose: () => void
   onPrev: () => void
   onNext: () => void
   onLike: () => void
-  onNeedLogin: () => void
   onCountChange: (photoKey: string, count: number) => void
 }
 
@@ -39,12 +37,10 @@ export function GdPostModal({
   total,
   liked,
   likeCount,
-  canInteract,
   onClose,
   onPrev,
   onNext,
   onLike,
-  onNeedLogin,
   onCountChange,
 }: GdPostModalProps) {
   const [comments, setComments] = useState<Comment[]>([])
@@ -112,10 +108,6 @@ export function GdPostModal({
   }, [onClose, onPrev, onNext])
 
   const doLike = () => {
-    if (!canInteract) {
-      onNeedLogin()
-      return
-    }
     setPop((p) => p + 1)
     onLike()
   }
@@ -276,11 +268,6 @@ export function GdPostModal({
                 {sending ? "Mengirim…" : "Kirim"}
               </button>
             </div>
-            {!canInteract && (
-              <p className="gd-modal__login" style={{ marginTop: ".5rem" }}>
-                Masuk atau daftar sebagai pegawai untuk berkomentar dan memberi hati.
-              </p>
-            )}
           </form>
         </div>
       </div>
