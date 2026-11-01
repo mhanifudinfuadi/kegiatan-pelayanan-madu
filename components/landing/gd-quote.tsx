@@ -9,59 +9,68 @@ interface GdQuoteProps {
   reaksi: number
 }
 
-/** Penghitung animasi; langsung ke nilai akhir bila reduced-motion. */
+/**
+ * Penghitung animasi.
+ * - Angka final selalu ditampilkan bila elemen belum terlihat (data bisa datang
+ *   setelah render), sehingga tidak pernah tertahan di 0.
+ * - Saat elemen masuk viewport pertama kali, angka dihitung naik dari 0.
+ */
 function useCounter(target: number) {
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(target)
   const ref = useRef<HTMLElement>(null)
-  const started = useRef(false)
+  const animated = useRef(false)
 
   useEffect(() => {
     const el = ref.current
-    if (!el) return
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    // data belum termuat (0) atau animasi dimatikan -> ikut nilai sebenarnya
-    if (reduced || target === 0 || started.current) {
+    if (!el || animated.current) {
       setValue(target)
       return
     }
 
-    // elemen sudah terlihat saat nilai pertama kali tersedia (data datang setelah render):
-    // langsung tampilkan angka final agar tidak tertinggal di 0
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduced || target === 0) {
+      animated.current = true
+      setValue(target)
+      return
+    }
+
+    // sudah terlihat saat render (data baru tersedia): tampilkan langsung
     const rect = el.getBoundingClientRect()
     const visible = rect.width > 0 && rect.top < window.innerHeight && rect.bottom > 0
     if (visible) {
-      started.current = true
+      animated.current = true
       setValue(target)
       return
     }
 
+    let raf = 0
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // sudah berjalan / sudah pernah selesai -> cukup ikuti nilai terbaru
-          if (started.current) {
+          if (animated.current) {
             setValue(target)
             return
           }
           if (!entry.isIntersecting) return
-          started.current = true
+          animated.current = true
           const start = performance.now()
           const dur = 1200
           const tick = (now: number) => {
             const p = Math.min((now - start) / dur, 1)
             setValue(Math.round(target * (1 - Math.pow(1 - p, 3))))
-            // nilai bisa berubah saat animasi berjalan (data/reaksi baru)
-            if (p < 1) requestAnimationFrame(tick)
+            if (p < 1) raf = requestAnimationFrame(tick)
             else setValue(target)
           }
-          requestAnimationFrame(tick)
+          raf = requestAnimationFrame(tick)
         })
       },
-      { threshold: 0.4 }
+      { threshold: 0.3 }
     )
-    // observer dipasang ulang setiap nilai berubah agar angka mengikuti data terbaru
     observer.observe(el)
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      cancelAnimationFrame(raf)
+    }
   }, [target])
 
   return { value, ref }
