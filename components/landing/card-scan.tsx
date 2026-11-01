@@ -134,7 +134,7 @@ export function CardScan({ activities }: CardScanProps) {
     return (
       <section className="sc" id="scan">
         <div className="wrap">
-          <p className="eyebrow light">Scan</p>
+          <p className="eyebrow light">スキャン</p>
           <h2 className="sc-title">Pindaian <span>Kegiatan</span></h2>
           <p className="sc-lead">Garis pemindai bergerak melintasi kartu kegiatan yang ada fotonya.</p>
           <div className="sc-empty" style={{ marginTop: "2rem" }}>
@@ -148,7 +148,7 @@ export function CardScan({ activities }: CardScanProps) {
   return (
     <section className="sc" id="scan" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div className="wrap">
-        <p className="eyebrow light">Scan</p>
+        <p className="eyebrow light">スキャン</p>
         <h2 className="sc-title">Pindaian <span>Kegiatan</span></h2>
         <p className="sc-lead">
           {allScannedImages.length} foto dokumentasi melintas di garis pemindai. Foto memudar menjadi aksara saat melewati garis. Jeda, perlambat, percepat.

@@ -106,7 +106,6 @@ export function Footer() {
         <p style={{ letterSpacing: ".2em", color: "#E9B6C9", fontSize: ".8rem", textTransform: "uppercase" }}>私の静かな宇宙 · MY QUIET UNIVERSE</p>
         <h2 style={{ fontSize: "clamp(3rem,7vw,6.5rem)", fontFamily: "serif", margin: ".5rem 0" }}>And Then, There Was You.</h2>
         <p style={{ color: "#E9B6C9", fontSize: "1rem" }}>そして、君がいた。</p>
-        <p style={{ color: "#8F8BA8", maxWidth: "42rem", lineHeight: 1.7, marginTop: "1rem" }}>Of all the things this world has given me, you are the one I was never prepared to feel.</p>
 
         <hr style={{ border: 0, borderTop: "1px solid rgba(243,235,221,.14)", margin: "2rem 0" }} />
 
@@ -122,8 +121,6 @@ export function Footer() {
               <p style={{ gridColumn: "1 / -1", textAlign: "center", color: "#E9B6C9", margin: "0", whiteSpace: "pre-line", lineHeight: 1.2 }}>somehow you{"\n"}feels like home</p>
               <a href="#tentang" style={{ color: "#F3EBDD" }} data-testid="footer-tentang">Tentang</a>
               <a href="#scan" style={{ color: "#F3EBDD" }} data-testid="footer-scan">Pindai</a>
-              <a href="#dokumentasi" style={{ color: "#F3EBDD" }}>Masuk Pegawai</a>
-              <a href="#dokumentasi" style={{ color: "#F3EBDD" }}>Daftar Pegawai</a>
             </nav>
           </div>
         </div>

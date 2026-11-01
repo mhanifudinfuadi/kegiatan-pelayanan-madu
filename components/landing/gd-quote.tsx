@@ -108,10 +108,9 @@ export function GdQuote({ foto, kegiatan, komentar, reaksi }: GdQuoteProps) {
       <div className="gd-wrap">
         <div className="gd-quote__body">
           <p>
-            “Pelayanan terbaik lahir dari perhatian yang tidak tergesa — pada setiap wajib pajak,
-            setiap pertanyaan, dan setiap hari yang kita lalui bersama.”
+            “Sebab dokumentasi bukan semata tentang menyimpan apa yang pernah terjadi, melainkan tentang merawat apa yang mungkin terlupakan. Tentang kesediaan mendengar cerita yang tak selalu terucap, mengabadikan harapan yang tak selalu terlihat, dan menjaga setiap kepercayaan seolah ia adalah kenangan paling berharga yang dititipkan kepada kita.”
           </p>
-          <p className="gd-over" style={{ marginTop: "1rem" }}>
+          <p className="gd-over" style={{ marginTop: "2rem", whiteSpace: "nowrap" }}>
             KPP Madya Dua Jakarta Barat
           </p>
         </div>
@@ -120,7 +119,7 @@ export function GdQuote({ foto, kegiatan, komentar, reaksi }: GdQuoteProps) {
           <GdCounter value={foto} label="Foto" testId="counter-foto" />
           <GdCounter value={kegiatan} label="Kegiatan" testId="counter-kegiatan" />
           <GdCounter value={komentar} label="Komentar" testId="counter-komentar" />
-          <GdCounter value={reaksi} label="Reaksi Hati" testId="counter-reaksi" />
+          <GdCounter value={reaksi} label="suka" testId="counter-reaksi" />
         </div>
       </div>
     </section>

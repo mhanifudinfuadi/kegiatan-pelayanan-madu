@@ -23,14 +23,13 @@ export function GdHero({ caption, stats }: GdHeroProps) {
 
       <div className="gd-hero__inner">
         <p className="gd-over" data-testid="hero-overline">
-          花見 · {INSTITUSI} · DJP Kemenkeu
+          花見 · {INSTITUSI} · 087
         </p>
         <h1 className="gd-hero__title" data-testid="hero-title">
-          Kegiatan Pelayanan, <em>dalam Setiap Bingkai</em>
+          Kegiatan Pelayanan, <em> <br />dalam Setiap Bingkai</em>
         </h1>
         <p className="gd-hero__lead">
-          Setiap momen pelayanan kepada wajib pajak direkam dalam satu galeri yang tenang dan elegan —
-          dari Pojok Pajak hingga Pajak Bertutur.
+          Sebab setiap momen memiliki cerita, dan setiap cerita pantas menemukan tempatnya untuk dikenang.
         </p>
 
         <div className="gd-hero__cta">

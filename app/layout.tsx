@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google'
 
 import { asset } from '@/lib/asset'
+import { ThemeProvider } from '@/components/theme-provider'
 
 import './globals.css'
 import '../styles/base.css'
@@ -38,9 +39,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
       <body className={`font-sans antialiased ${_playfair.variable} ${_jakarta.variable} ${_geistMono.variable}`}>
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )
